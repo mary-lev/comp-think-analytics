@@ -7,8 +7,8 @@ This repository is part of my master's thesis project at the Digital Humanities 
 
 ## Repository Structure
 .
-├── github_stats.ipynb  # Analysis notebook
-├── repo_data/  # Raw GitHub data by cohort
+├── github_stats.ipynb
+├── repo_data/
 │   ├── 2018-2019.csv
 │   ├── 2019-2020.csv
 │   └── ...
