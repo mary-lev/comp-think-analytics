@@ -6,6 +6,7 @@ This repository is part of my master's thesis project at the Digital Humanities 
 
 
 ## Repository Structure
+```
 .
 ├── github_stats.ipynb
 ├── repo_data/
@@ -13,6 +14,7 @@ This repository is part of my master's thesis project at the Digital Humanities 
 │   ├── 2019-2020.csv
 │   └── ...
 └── README.md
+```
 
 ## Analysis Overview
 
