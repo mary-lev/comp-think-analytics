@@ -1,0 +1,3181 @@
+repo_name,issue_title,comment_user,comment_text,comment_datetime
+comp-think/2019-2020,"Lecture ""Greedy algorithms"", exercise 2",sntcristian,"```ruby
+def test_select_activities(set_of_activities, expected):
+    result = select_activity(set_of_activities)
+    if expected == len(result):
+        bool_result = True
+        for idx, activity in enumerate(result):
+            if idx > 0:
+                bool_result = bool_result and (activity[0] >= result[idx - 1][1])
+
+        return bool_result
+    else:
+        return False
+
+def select_activity(set_of_activities):
+    start = 0
+    end = 24
+    result = []
+    prev_len = len(result)
+    for hour in range(start+1, end+1):
+        if len(set_of_activities) == 0:
+            return result
+        else:
+            for activity in set_of_activities:
+                if activity[0] >= start and activity[1] <= hour:
+                    result.append(activity)
+                    start = activity[1]
+                    break
+            if len(result) > prev_len:
+                prev_len = len(result)
+                set_of_activities.remove(result[-1])
+    return result
+    
+activities_1 = set()
+activities_1.add((0, 3))
+activities_1.add((4, 7))
+activities_1.add((2, 12))
+activities_1.add((7, 8))
+activities_1.add((10, 13))
+activities_1.add((12, 20))
+activities_1.add((14, 17))
+activities_1.add((16, 19))
+activities_1.add((17, 24))
+activities_1.add((21, 23))
+
+print(test_select_activities(activities_1, 6))
+print(test_select_activities(set(), 0))
+",2020-01-05T14:20:55+00:00
+comp-think/2019-2020,"Lecture ""Greedy algorithms"", exercise 1",sntcristian,"``` ruby
+def test_do_coins(amount, expected):
+    result = do_coins(amount)
+    if expected == result:
+        return True
+    else:
+        return False
+
+def do_coins(amount):
+    coins = [2.0, 1.0, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01]
+    result = []
+    return recursive_do_coins(amount, coins, result)
+
+def recursive_do_coins(amount, coins, result):
+    if amount == 0 or len(coins) == 0:
+        return result
+    else:
+        curr_coin = coins[0]
+        while curr_coin <= amount:
+            result.append(curr_coin)
+            amount = float_diff(amount, curr_coin)
+        coins.remove(curr_coin)
+        return recursive_do_coins(amount, coins, result)
+
+
+def float_diff(f1, f2):
+    return round(f1 - f2, 2)
+    
+print(test_do_coins(5.00, [2.0, 2.0, 1.0]))
+print(test_do_coins(2.76, [2.0, 0.5, 0.2, 0.05, 0.01]))
+print(test_do_coins(0.00, []))",2020-01-05T14:44:30+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 2",morinigiu,"<img width=""763"" alt=""Schermata 2019-12-09 alle 14 23 54"" src=""https://user-images.githubusercontent.com/56439205/70439111-8dceb080-1a8f-11ea-8221-17b3f2866efd.png"">
+",2019-12-09T13:24:22+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 2",giuliamanganelli,"![Screen Shot 2019-12-09 at 14 01 07](https://user-images.githubusercontent.com/57599228/70439443-53b1de80-1a90-11ea-9a71-dc7a6d3e541d.png)
+",2019-12-09T13:29:39+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 2",arcangelo7,"```python
+from networkx import MultiDiGraph, draw
+import matplotlib.pyplot as plt
+
+movies_characters_graph = MultiDiGraph()
+
+# Actors
+movies_characters_graph.add_node(""Brad Pitt"")
+movies_characters_graph.add_node(""Eva Green"")
+movies_characters_graph.add_node(""George Clooney"")
+movies_characters_graph.add_node(""Catherine Zeta-Jones"")
+movies_characters_graph.add_node(""Johnny Depp"")
+movies_characters_graph.add_node(""Helena Bonham Carter"")
+
+# Cast of Ocean's Twelve
+movies_characters_graph.add_edge(""Brad Pitt"", ""Ocean's Twelve"")
+movies_characters_graph.add_edge(""Catherine Zeta-Jones"", ""Ocean's Twelve"")
+movies_characters_graph.add_edge(""George Clooney"", ""Ocean's Twelve"")
+
+# Cast of Fight Club
+movies_characters_graph.add_edge(""Brad Pitt"", ""Fight Club"")
+movies_characters_graph.add_edge(""Helena Bonham Carter"", ""Fight Club"")
+
+# Cast of Dark Shadows
+movies_characters_graph.add_edge(""Johnny Depp"", ""Dark Shadows"")
+movies_characters_graph.add_edge(""Helena Bonham Carter"", ""Dark Shadows"")
+movies_characters_graph.add_edge(""Eva Green"", ""Dark Shadows"")
+
+
+print(movies_characters_graph.nodes())
+# ['Brad Pitt', 'Eva Green', 'George Clooney', 'Catherine Zeta-Jones', 'Johnny Depp', 'Helena Bonham Carter', ""Ocean's Twelve"", 'Fight Club', 'Dark Shadows']
+
+print(movies_characters_graph.edges())
+# [('Brad Pitt', ""Ocean's Twelve""), ('Brad Pitt', 'Fight Club'), ('George Clooney', ""Ocean's Twelve""), ('Catherine Zeta-Jones', ""Ocean's Twelve""), 
+# ('Johnny Depp', 'Dark Shadows'), ('Helena Bonham Carter', 'Fight Club'), ('Helena Bonham Carter', 'Dark Shadows')]
+
+draw(movies_characters_graph, with_labels = True)
+plt.savefig(""filename.png"")
+```
+
+![filename](https://user-images.githubusercontent.com/42008604/70724571-21f08000-1cfb-11ea-9dfd-3d3abcc82006.png)
+
+
+",2019-12-09T19:03:05+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 2",FrancescoFernicola,"```
+from networkx import MultiDiGraph
+
+movies_graph = MultiDiGraph()
+
+movies_graph.add_node(""Brad Pitt"")
+movies_graph.add_node(""Eva Green"")
+movies_graph.add_node(""George Clooney"")
+movies_graph.add_node(""Catherine Zeta-Jones"")
+movies_graph.add_node(""Johnny Depp"")
+movies_graph.add_node(""Helena Bonham Carter"")
+movies_graph.add_node(""Ocean's Twelve"")
+movies_graph.add_node(""Fight Club"")
+movies_graph.add_node(""Dark Shadows"")
+
+movies_graph.add_edge(""Brad Pitt"", ""Fight Club"")
+movies_graph.add_edge(""Brad Pitt"", ""Ocean's Twelve"")
+movies_graph.add_edge(""Eva Green"", ""Dark Shadows"")
+movies_graph.add_edge(""George Clooney"", ""Ocean's Twelve"")
+movies_graph.add_edge(""Catherine Zeta-Jones"", ""Ocean's Twelve"")
+movies_graph.add_edge(""Johnny Depp"", ""Dark Shadows"")
+movies_graph.add_edge(""Helena Bonham Carter"", ""Fight Club"")
+movies_graph.add_edge(""Helena Bonham Carter"", ""Dark Shadows"")
+
+print(movies_graph.nodes())
+#['Brad Pitt', 'Eva Green', 'George Clooney', 'Catherine Zeta-Jones', 'Johnny Depp', 'Helena Bonham Carter', ""Ocean's Twelve"", 'Fight Club', 'Dark Shadows']
+
+print(movies_graph.edges())
+#[('Brad Pitt', 'Fight Club'), ('Brad Pitt', ""Ocean's Twelve""), ('Eva Green', 'Dark Shadows'), ('George Clooney', ""Ocean's Twelve""), ('Catherine Zeta-Jones', ""Ocean's Twelve""), ('Johnny Depp', 'Dark Shadows'), ('Helena Bonham Carter', 'Fight Club'), ('Helena Bonham Carter', 'Dark Shadows')]
+```",2019-12-10T22:41:58+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 2",marcograsso,"Used matplotlib as suggested by @arcangelo7 in order to visualize the graph. ![graphex2](https://user-images.githubusercontent.com/56439271/70706885-23a84c80-1cd7-11ea-8822-802614c1e887.png)
+",2019-12-12T11:04:36+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 1",morinigiu,"<img width=""793"" alt=""Schermata 2019-12-09 alle 14 22 40"" src=""https://user-images.githubusercontent.com/56439205/70439036-6677e380-1a8f-11ea-8de0-594e1565cd43.png"">
+",2019-12-09T13:23:07+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 1",giuliamanganelli,"![Screen Shot 2019-12-09 at 14 20 12](https://user-images.githubusercontent.com/57599228/70439386-30872f00-1a90-11ea-8fb8-91afda763501.png)
+",2019-12-09T13:28:44+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 1",arcangelo7,"I looked for a quick and easy way to represent the graph and see if it was correct. I found this: https://www.geeksforgeeks.org/python-visualize-graphs-generated-in-networkx-using-matplotlib/.
+However, I didn't understand how to add attributes to the image.
+
+I also noticed that if you create a connection between two nodes without having created the nodes first, they are created automatically, thus saving you many steps. Is this approach correct @essepuntato?
+
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+tim_berners_lee_network = nx.MultiGraph()
+
+tim_berners_lee_network.add_edge(""Tim Berners Lee"", ""Tom Heath"", weight=18)
+tim_berners_lee_network.add_edge(""Tim Berners Lee"", ""Christian Bizer"", weight=18)
+tim_berners_lee_network.add_edge(""Tim Berners Lee"", ""Sören Auer"", weight=10)
+tim_berners_lee_network.add_edge(""Tim Berners Lee"", ""Lalana Kagal"", weight=9)
+tim_berners_lee_network.add_edge(""Tim Berners Lee"", ""Daniel J. Weitzner"", weight=8)
+
+print(tim_berners_lee_network.nodes())
+# ['Tim Berners Lee', 'Tom Heath', 'Christian Bizer', 'Sören Auer', 'Lalana Kagal', 'Daniel J. Weitzner']
+
+print(tim_berners_lee_network.edges(data=True))
+# [('Tim Berners Lee', 'Tom Heath', {'weight': 18}), ('Tim Berners Lee', 'Christian Bizer', {'weight': 18}), ('Tim Berners Lee', 'Sören Auer', {'weight': 10}), ('Tim Berners Lee', 'Lalana Kagal', {'weight': 9}), ('Tim Berners Lee', 'Daniel J. Weitzner', {'weight': 8})]
+
+nx.draw(tim_berners_lee_network, with_labels = True)
+plt.savefig(""filename.png"")
+```
+
+![filename](https://user-images.githubusercontent.com/42008604/70461908-0cd8de80-1aba-11ea-8af8-cce567a05776.png)",2019-12-09T18:08:58+00:00
+comp-think/2019-2020,"Lecture ""Organising information: graphs"", exercise 1",FrancescoFernicola,"```
+from networkx import Graph
+
+mygraph = Graph()
+
+mygraph.add_node(""Tom Heath"")
+mygraph.add_node(""Christian Bizer"")
+mygraph.add_node(""Sören Auer"")
+mygraph.add_node(""Lalana Kagal"")
+mygraph.add_node(""Daniel J. Weitzner"")
+mygraph.add_node(""Tim Berners Lee"")
+
+mygraph.add_edge(""Tim Berners Lee"", ""Tom Heath"", weight=18)
+mygraph.add_edge(""Tim Berners Lee"", ""Christian Bizer"", weight=18)
+mygraph.add_edge(""Tim Berners Lee"", ""Sören Auer"", weight=10)
+mygraph.add_edge(""Tim Berners Lee"", ""Lalana Kagal"", weight=9)
+mygraph.add_edge(""Tim Berners Lee"", ""Daniel J. Weitzner"", weight=8)
+
+print(mygraph.nodes())
+#['Tom Heath', 'Christian Bizer', 'Sören Auer', 'Lalana Kagal', 'Daniel J. Weitzner', 'Tim Berners Lee']
+
+print(mygraph.edges(data=True))
+#[('Tom Heath', 'Tim Berners Lee', {'weight': 18}), ('Christian Bizer', 'Tim Berners Lee', {'weight': 18}), ('Sören Auer', 'Tim Berners Lee', {'weight': 10}), ('Lalana Kagal', 'Tim Berners Lee', {'weight': 9}), ('Daniel J. Weitzner', 'Tim Berners Lee', {'weight': 8})]
+
+print(mygraph.adj[""Tim Berners Lee""])
+#{'Tom Heath': {'weight': 18}, 'Christian Bizer': {'weight': 18}, 'Sören Auer': {'weight': 10}, 'Lalana Kagal': {'weight': 9}, 'Daniel J. Weitzner': {'weight': 8}}
+```",2019-12-10T22:25:51+00:00
+comp-think/2019-2020,"Lecture ""Backtracking algorithms"", exercise 2",NoonShin,"_Note: While trying to solve the problem, I didn't notice that the question just asks for the very last move made to escape, so I made the implementation with a stack for the last move, which shows the complete path. However, it isn't much different from the original question._
+
+```python
+from collections import deque
+
+
+def create_table():
+  paths = set([(0, 1), (0, 2), (0, 3), (0, 4), (0,5),
+  (1, 0), (1, 1), (1, 5),
+  (2, 1), (2, 2), (2, 3), (2, 5),
+  (3, 0), (3, 1), (3, 3), (3, 5),
+  (4, 0), (4, 2), (4, 4), (4, 5),
+  (5, 0), (5, 1), (5, 2), (5, 3)])
+  return paths
+
+def find_possible_locs(entrance, paths, last_move):
+  x = entrance[0]
+  y = entrance[1]
+  locs = set()
+  if last_move == 'start':
+    locs = set([(x, y+1), (x, y-1), (x+1, y), (x-1, y)])
+  elif last_move == 'left':
+    locs =  set([(x, y+1), (x, y-1), (x-1, y)])
+  elif last_move == 'right':
+    locs = set([(x, y+1), (x, y-1), (x+1, y)])
+  elif last_move == 'up':
+    locs = set([(x, y-1), (x+1, y), (x-1, y)])
+  elif last_move == 'down':
+    locs = set([(x, y+1), (x+1, y), (x-1, y)])    
+  return [x for x in locs if x in paths]
+
+def make_move(entrance, loc):
+  if entrance[0] == loc[0]:
+    if entrance[1] == loc[1]-1:
+      move = 'down'
+    else:
+      move = 'up'
+  elif entrance[0] == loc[0]-1:
+    move = 'right'
+  else:
+    move = 'left'
+  return loc, move
+
+def undo_move(entrance, last_move):
+  move_made = last_move.pop()
+  x = entrance[0]
+  y = entrance[1]
+  if move_made == 'left':
+    return (x+1, y)
+  elif move_made == 'right':
+    return (x-1, y)
+  elif move_made == 'up':
+    return (x, y+1)
+  else:
+    return (x, y-1)
+
+def solve_labyrinth(paths, entrance, exit, last_move):
+  if entrance == exit:
+    return last_move
+
+  next_locs = find_possible_locs(entrance, paths, last_move[-1])
+  if len(next_locs) == 0:
+    return None
+
+  for loc in next_locs:
+    entrance, curr_move = make_move(entrance, loc)
+    last_move.append(curr_move)
+    result = solve_labyrinth(paths, entrance, exit, last_move)
+    if result is not None:
+      return result
+    else:
+      entrance = undo_move(entrance, last_move)
+
+  return None
+
+def test_solve_labyrinth(paths, entrance, exit, last_move, expected):
+  result = solve_labyrinth(paths, entrance, exit, last_move)
+  return result == last_move
+  
+paths = create_table()  
+moves = deque()
+moves.append('start')
+print(test_solve_labyrinth(paths, (0, 1), (4, 2), moves, deque(['start', 'right', 'right', 'right', 'up', 'right', 'right', 'down', 'down', 'left'])))
+
+moves = deque()
+moves.append('start')
+print(test_solve_labyrinth(paths, (5, 3), (4, 4), moves, deque(['start', 'up', 'up', 'up', 'left', 'left', 'down', 'left', 'left', 'left', 'down', 'down', 'down', 'down', 'right', 'right', 'right', 'right', 'up'])))
+
+moves = deque()
+moves.append('start')
+print(test_solve_labyrinth(paths, (4, 4), (3, 3), moves, deque(['start', 'down', 'left', 'left', 'left', 'left', 'up', 'up', 'up', 'up', 'right', 'right', 'down', 'down', 'right'])))
+
+```",2019-12-08T23:07:19+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 2",ereuhl,"```python
+from anytree import Node
+
+
+def breadth_first_visit(root_node):
+    discovered_nodes = [root_node]
+    visited_nodes = []
+    while discovered_nodes:
+        current_node = discovered_nodes.pop(0)
+        visited_nodes.append(current_node)
+        if current_node.children:
+            for child in current_node.children:
+                discovered_nodes.append(child)
+    return visited_nodes
+
+
+def test_breadth_first_visit(root_node, expected):
+    result = breadth_first_visit(root_node)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+book = Node(""book"")
+chapter_1 = Node(""chapter"", book)
+chapter_2 = Node(""chapter"", book)
+paragraph_1 = Node(""paragraph"", chapter_1)
+text_1 = Node(""Alice was beginning to get very tired of sitting by ""
+              ""her sister on the bank, and of having nothing to do: ""
+              ""once or twice she had peeped into the book her sister ""
+              ""was reading, but it had no pictures or conversations ""
+              ""in it, "", paragraph_1)
+quotation_1 = Node(""quotation"", paragraph_1)
+text_2 = Node(""“and what is the use of a book,”"", quotation_1)
+text_3 = Node("" thought Alice, "", paragraph_1)
+quotation_2 = Node(""quotation"", paragraph_1)
+text_4 = Node(""“without pictures or conversations?”"", quotation_2)
+paragraph_2 = Node(""paragraph"", chapter_1)
+text_5 = Node(""So she was considering in her own mind, (as well as ""
+              ""she could, for the hot day made her feel very sleepy ""
+              ""and stupid,) whether the pleasure of making a ""
+              ""daisy-chain would be worth the trouble of getting up ""
+              ""and picking the daisies, when suddenly a white rabbit ""
+              ""with pink eyes ran close by her."", paragraph_2)
+paragraph_3 = Node(""paragraph"", chapter_1)
+text_6 = Node(""..."", paragraph_3)
+text_7 = Node(""..."", chapter_2)
+text_8 = Node(""..."", book)
+
+
+print(test_breadth_first_visit(book, [book, chapter_1, chapter_2, text_8, paragraph_1, paragraph_2, paragraph_3, text_7, text_1, quotation_1, text_3, quotation_2, text_5, text_6, text_2, text_4]))  # True
+print(test_breadth_first_visit(chapter_2, [chapter_2, text_7]))  # True
+print(test_breadth_first_visit(text_1, [text_1]))  # True
+```
+
+Am I missing another type of test case?",2019-12-03T21:33:02+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 2",FrancescoFernicola,"```
+from anytree import Node, RenderTree
+
+book = Node(""book"")
+chapter_1 = Node(""chapter"", book)
+chapter_2 = Node(""chapter"", book)
+
+paragraph_1 = Node(""paragraph"", chapter_1)
+text_1 = Node(""Alice was beginning to get very tired of sitting by ""
+              ""her sister on the bank, and of having nothing to do: ""
+              ""once or twice she had peeped into the book her sister ""
+              ""was reading, but it had no pictures or conversations ""
+              ""in it, "", paragraph_1)
+quotation_1 = Node(""quotation"", paragraph_1)
+text_2 = Node(""“and what is the use of a book,”"", quotation_1)
+text_3 = Node("" thought Alice, "", paragraph_1)
+quotation_2 = Node(""quotation"", paragraph_1)
+text_4 = Node(""“without pictures or conversations?”"", quotation_2)
+
+paragraph_2 = Node(""paragraph"", chapter_1)
+text_5 = Node(""So she was considering in her own mind, (as well as ""
+              ""she could, for the hot day made her feel very sleepy ""
+              ""and stupid,) whether the pleasure of making a ""
+              ""daisy-chain would be worth the trouble of getting up ""
+              ""and picking the daisies, when suddenly a white rabbit ""
+              ""with pink eyes ran close by her."", paragraph_2)
+paragraph_3 = Node(""paragraph"", chapter_1)
+text_6 = Node("". . ."", paragraph_3)
+text_7 = Node("". . ."", chapter_2)
+text_8 = Node("". . ."", book)
+
+def test_breadth_first_visit(root_node, expected):
+    result = breadth_first_visit(root_node)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+def breadth_first_visit(root_node):
+    node_list = []
+    base_node = [root_node]
+    while base_node:
+        other_node = base_node.pop(0)
+        node_list.append(other_node)
+        if other_node.children:
+            for child in other_node.children:
+                base_node.append(child)
+    return node_list
+
+
+print(test_breadth_first_visit(book, [book, chapter_1, chapter_2, text_8, paragraph_1, paragraph_2, paragraph_3, text_7, text_1, quotation_1, text_3, quotation_2, text_5, text_6, text_2, text_4]))
+
+```",2019-12-05T17:52:25+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 2",NoonShin,"```python
+from anytree import Node
+
+def test_breadth_first_visit(root_node, expected):
+    result = breadth_first_visit(root_node)
+    if result == expected:
+        return True
+    else:
+        return False
+
+def breadth_first_visit(root):
+    lst = list()
+    lst.append(root)
+    for item in lst:
+      lst.extend(item.children)
+    return lst
+
+book = Node(""book"")
+chapter_1 = Node(""chapter"", book)
+chapter_2 = Node(""chapter"", book)
+paragraph_1 = Node(""paragraph"", chapter_1)
+text_1 = Node(""Alice was beginning to get very tired of sitting by ""
+              ""her sister on the bank, and of having nothing to do: ""
+              ""once or twice she had peeped into the book her sister ""
+              ""was reading, but it had no pictures or conversations ""
+              ""in it, "", paragraph_1)
+quotation_1 = Node(""quotation"", paragraph_1)
+text_2 = Node(""“and what is the use of a book,”"", quotation_1)
+text_3 = Node("" thought Alice, "", paragraph_1)
+quotation_2 = Node(""quotation"", paragraph_1)
+text_4 = Node(""“without pictures or conversations?”"", quotation_2)
+paragraph_2 = Node(""paragraph"", chapter_1)
+text_5 = Node(""So she was considering in her own mind, (as well as ""
+              ""she could, for the hot day made her feel very sleepy ""
+              ""and stupid,) whether the pleasure of making a ""
+              ""daisy-chain would be worth the trouble of getting up ""
+              ""and picking the daisies, when suddenly a white rabbit ""
+              ""with pink eyes ran close by her."", paragraph_2)
+paragraph_3 = Node(""paragraph"", chapter_1)
+text_6 = Node(""..."", paragraph_3)
+text_7 = Node(""..."", chapter_2)
+text_8 = Node(""..."", book)
+
+
+print(test_breadth_first_visit(book, [book, chapter_1, chapter_2, text_8, paragraph_1, paragraph_2, paragraph_3, text_7, text_1, quotation_1, text_3, quotation_2, text_5, text_6, text_2, text_4]))
+```",2019-12-08T21:16:18+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 2",arcangelo7,"I just understood @NoonShin solution and changed the names of the variables with more semantic names.
+
+```python
+from anytree import Node
+
+
+def test_breadth_first_visit(root, expected):
+    if breadth_first_visit(root) == expected:
+        return True
+    else:
+        return False
+
+
+def breadth_first_visit(root):
+    visited_nodes = list()
+    visited_nodes.append(root)
+    for node in visited_nodes:
+        visited_nodes.extend(node.children)
+
+    return visited_nodes
+
+
+book = Node(""book"")
+chapter_1 = Node(""chapter"", book)
+chapter_2 = Node(""chapter"", book)
+paragraph_1 = Node(""paragraph"", chapter_1)
+text_1 = Node(""Alice was beginning to get very tired of sitting by ""
+""her sister on the bank, and of having nothing to do: ""
+""once or twice she had peeped into the book her sister ""
+""was reading, but it had no pictures or conversations ""
+""in it, "", paragraph_1)
+quotation_1 = Node(""quotation"", paragraph_1)
+text_2 = Node(""“and what is the use of a book,”"", quotation_1)
+text_3 = Node("" thought Alice, "", paragraph_1)
+quotation_2 = Node(""quotation"", paragraph_1)
+text_4 = Node(""“without pictures or conversations?”"", quotation_2)
+paragraph_2 = Node(""paragraph"", chapter_1)
+text_5 = Node(""So she was considering in her own mind, (as well as ""
+""she could, for the hot day made her feel very sleepy ""
+""and stupid,) whether the pleasure of making a ""
+""daisy-chain would be worth the trouble of getting up ""
+""and picking the daisies, when suddenly a white rabbit ""
+""with pink eyes ran close by her."", paragraph_2)
+paragraph_3 = Node(""paragraph"", chapter_1)
+text_6 = Node(""..."", paragraph_3)
+text_7 = Node(""..."", chapter_2)
+text_8 = Node(""..."", book)
+
+
+print(test_breadth_first_visit(book, [book, chapter_1, chapter_2, text_8, paragraph_1, paragraph_2, paragraph_3, text_7, text_1, quotation_1, text_3, quotation_2, text_5, text_6, text_2, text_4]))
+```",2019-12-09T11:49:19+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 2",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/11/exercise-2):
+
+```
+# Test case for the function
+def test_breadth_first_visit(root_node, expected):
+    result = breadth_first_visit(root_node)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def breadth_first_visit(root_node):
+    result = list()
+    to_visit = deque()
+    to_visit.append(root_node)
+
+    while to_visit:
+        node_to_visit = to_visit.popleft()
+        result.append(node_to_visit)
+        to_visit.extend(node_to_visit.children)
+
+    return result
+
+
+# Tests
+book = Node(""book"")
+chapter_1 = Node(""chapter1"", book)
+chapter_2 = Node(""chapter2"", book)
+paragraph_1 = Node(""paragraph1"", chapter_1)
+text_1 = Node(""text1"", paragraph_1)
+quotation_1 = Node(""quotation1"", paragraph_1)
+text_2 = Node(""text2"", quotation_1)
+text_3 = Node(""text3"", paragraph_1)
+quotation_2 = Node(""quotation2"", paragraph_1)
+text_4 = Node(""text4"", quotation_2)
+paragraph_2 = Node(""paragraph2"", chapter_1)
+text_5 = Node(""text5"", paragraph_2)
+paragraph_3 = Node(""paragraph3"", chapter_1)
+text_6 = Node(""text6"", paragraph_3)
+text_7 = Node(""text7"", chapter_2)
+text_8 = Node(""text8"", book)
+bfv = [book,
+       chapter_1, chapter_2, text_8,
+       paragraph_1, paragraph_2, paragraph_3, text_7,
+       text_1, quotation_1, text_3, quotation_2, text_5, text_6,
+       text_2, text_4]
+print(test_breadth_first_visit(book, bfv))
+```",2019-12-09T15:14:58+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 1",ereuhl,"Edit: I didn't pay attention and came up with a non-recursive solution at first, I moved that to #33 
+Here is my recursive solution now:
+```python
+from anytree import Node
+
+
+def breadth_first_visit(root_node):
+    visited_nodes = []
+    discovered_nodes = [root_node]
+    while discovered_nodes:
+        visited_nodes.append(recursive_breadth_first_visit(root_node, discovered_nodes))
+    return visited_nodes
+
+
+def recursive_breadth_first_visit(root_node, discovered_nodes):
+    current_node = discovered_nodes.pop(0)
+    if current_node.children:
+        for child in current_node.children:
+            discovered_nodes.append(child)
+    return current_node
+
+
+def test_breadth_first_visit(root_node, expected):
+    result = breadth_first_visit(root_node)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+book = Node(""book"")
+chapter_1 = Node(""chapter"", book)
+chapter_2 = Node(""chapter"", book)
+paragraph_1 = Node(""paragraph"", chapter_1)
+text_1 = Node(""Alice was beginning to get very tired of sitting by ""
+              ""her sister on the bank, and of having nothing to do: ""
+              ""once or twice she had peeped into the book her sister ""
+              ""was reading, but it had no pictures or conversations ""
+              ""in it, "", paragraph_1)
+quotation_1 = Node(""quotation"", paragraph_1)
+text_2 = Node(""“and what is the use of a book,”"", quotation_1)
+text_3 = Node("" thought Alice, "", paragraph_1)
+quotation_2 = Node(""quotation"", paragraph_1)
+text_4 = Node(""“without pictures or conversations?”"", quotation_2)
+paragraph_2 = Node(""paragraph"", chapter_1)
+text_5 = Node(""So she was considering in her own mind, (as well as ""
+              ""she could, for the hot day made her feel very sleepy ""
+              ""and stupid,) whether the pleasure of making a ""
+              ""daisy-chain would be worth the trouble of getting up ""
+              ""and picking the daisies, when suddenly a white rabbit ""
+              ""with pink eyes ran close by her."", paragraph_2)
+paragraph_3 = Node(""paragraph"", chapter_1)
+text_6 = Node(""..."", paragraph_3)
+text_7 = Node(""..."", chapter_2)
+text_8 = Node(""..."", book)
+
+print(test_breadth_first_visit(book, [book, chapter_1, chapter_2, text_8, paragraph_1, paragraph_2, paragraph_3, text_7, text_1, quotation_1, text_3, quotation_2, text_5, text_6, text_2, text_4]))  # True
+print(test_breadth_first_visit(chapter_2, [chapter_2, text_7]))  # True
+print(test_breadth_first_visit(text_1, [text_1]))  # True
+```
+
+I am not sure if there needs to be another type of test case, and whether it is necessary to split the function in two...",2019-12-03T21:27:07+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 1",NoonShin,"``` python
+from anytree import Node
+from collections import deque
+
+def test_breadth_first_visit(root_node, expected):
+    result = breadth_first_visit(root_node)
+    if result == expected:
+        return True
+    else:
+        return False
+
+def breadth_first_visit(root):
+    queue = deque()
+    queue.append(root)
+    return recursive_breadth_first(queue, list())
+
+def recursive_breadth_first(queue, lst):
+    if len(queue) == 0:
+        return lst
+    item = queue.popleft()
+    lst.append(item)
+    queue.extend(item.children)
+    return recursive_breadth_first(queue, lst)
+
+book = Node(""book"")
+chapter_1 = Node(""chapter"", book)
+chapter_2 = Node(""chapter"", book)
+paragraph_1 = Node(""paragraph"", chapter_1)
+text_1 = Node(""Alice was beginning to get very tired of sitting by ""
+              ""her sister on the bank, and of having nothing to do: ""
+              ""once or twice she had peeped into the book her sister ""
+              ""was reading, but it had no pictures or conversations ""
+              ""in it, "", paragraph_1)
+quotation_1 = Node(""quotation"", paragraph_1)
+text_2 = Node(""“and what is the use of a book,”"", quotation_1)
+text_3 = Node("" thought Alice, "", paragraph_1)
+quotation_2 = Node(""quotation"", paragraph_1)
+text_4 = Node(""“without pictures or conversations?”"", quotation_2)
+paragraph_2 = Node(""paragraph"", chapter_1)
+text_5 = Node(""So she was considering in her own mind, (as well as ""
+              ""she could, for the hot day made her feel very sleepy ""
+              ""and stupid,) whether the pleasure of making a ""
+              ""daisy-chain would be worth the trouble of getting up ""
+              ""and picking the daisies, when suddenly a white rabbit ""
+              ""with pink eyes ran close by her."", paragraph_2)
+paragraph_3 = Node(""paragraph"", chapter_1)
+text_6 = Node(""..."", paragraph_3)
+text_7 = Node(""..."", chapter_2)
+text_8 = Node(""..."", book)
+
+
+print(test_breadth_first_visit(book, [book, chapter_1, chapter_2, text_8, paragraph_1, paragraph_2, paragraph_3, text_7, text_1, quotation_1, text_3, quotation_2, text_5, text_6, text_2, text_4]))
+```",2019-12-08T21:04:07+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 1",arcangelo7,"I just understood @NoonShin solution and changed the names of the variables with more semantic names.
+
+```python
+from anytree import Node
+from collections import deque
+
+
+def test_breadth_first_visit(root_node, expected):
+    result = breadth_first_visit(root_node)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+def breadth_first_visit(root):
+    node_to_visit = deque()
+    node_to_visit.append(root)
+    return breadth_first_visit_recursive(node_to_visit, list())
+
+
+def breadth_first_visit_recursive(node_to_visit, visited_nodes):
+    if len(node_to_visit) == 0:
+        return visited_nodes
+    item = node_to_visit.popleft()
+    visited_nodes.append(item)
+    node_to_visit.extend(item.children)
+    return breadth_first_visit_recursive(node_to_visit, visited_nodes)
+
+
+book = Node(""book"")
+chapter_1 = Node(""chapter"", book)
+chapter_2 = Node(""chapter"", book)
+paragraph_1 = Node(""paragraph"", chapter_1)
+text_1 = Node(""Alice was beginning to get very tired of sitting by ""
+              ""her sister on the bank, and of having nothing to do: ""
+              ""once or twice she had peeped into the book her sister ""
+              ""was reading, but it had no pictures or conversations ""
+              ""in it, "", paragraph_1)
+quotation_1 = Node(""quotation"", paragraph_1)
+text_2 = Node(""“and what is the use of a book,”"", quotation_1)
+text_3 = Node("" thought Alice, "", paragraph_1)
+quotation_2 = Node(""quotation"", paragraph_1)
+text_4 = Node(""“without pictures or conversations?”"", quotation_2)
+paragraph_2 = Node(""paragraph"", chapter_1)
+text_5 = Node(""So she was considering in her own mind, (as well as ""
+              ""she could, for the hot day made her feel very sleepy ""
+              ""and stupid,) whether the pleasure of making a ""
+              ""daisy-chain would be worth the trouble of getting up ""
+              ""and picking the daisies, when suddenly a white rabbit ""
+              ""with pink eyes ran close by her."", paragraph_2)
+paragraph_3 = Node(""paragraph"", chapter_1)
+text_6 = Node(""..."", paragraph_3)
+text_7 = Node(""..."", chapter_2)
+text_8 = Node(""..."", book)
+
+
+print(test_breadth_first_visit(book, [book, chapter_1, chapter_2, text_8, paragraph_1, paragraph_2, paragraph_3, text_7, text_1, quotation_1, text_3, quotation_2, text_5, text_6, text_2, text_4])) 
+# True
+```",2019-12-09T11:46:31+00:00
+comp-think/2019-2020,"Lecture ""Organising information: trees"", exercise 1",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/11/exercise-1). Contrarily to the approach proposed by @NoonShin et al. (great work, BTW!), my solution move the part related to the queue to a new ""fake"" root I add at the very beginning of the process, and that I remove at the very end.
+
+```
+from anytree import Node
+from collections import deque
+
+
+# Test case for the function
+def test_breadth_first_visit(root_node, expected):
+    result = breadth_first_visit(root_node)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def breadth_first_visit(root_node):
+    result = list()
+
+    if len(root_node.ancestors) == 0:  # It is the first call
+        root_node.parent = Node(deque())
+
+    queue = root_node.root.name
+    result.append(root_node)
+    queue.extend(root_node.children)
+
+    if len(queue) > 0:
+        result.extend(breadth_first_visit(queue.popleft()))
+    else:
+        root_node.root.children = ()
+
+    return result
+
+
+# Tests
+book = Node(""book"")
+chapter_1 = Node(""chapter1"", book)
+chapter_2 = Node(""chapter2"", book)
+paragraph_1 = Node(""paragraph1"", chapter_1)
+text_1 = Node(""text1"", paragraph_1)
+quotation_1 = Node(""quotation1"", paragraph_1)
+text_2 = Node(""text2"", quotation_1)
+text_3 = Node(""text3"", paragraph_1)
+quotation_2 = Node(""quotation2"", paragraph_1)
+text_4 = Node(""text4"", quotation_2)
+paragraph_2 = Node(""paragraph2"", chapter_1)
+text_5 = Node(""text5"", paragraph_2)
+paragraph_3 = Node(""paragraph3"", chapter_1)
+text_6 = Node(""text6"", paragraph_3)
+text_7 = Node(""text7"", chapter_2)
+text_8 = Node(""text8"", book)
+bfv = [book,
+       chapter_1, chapter_2, text_8,
+       paragraph_1, paragraph_2, paragraph_3, text_7,
+       text_1, quotation_1, text_3, quotation_2, text_5, text_6,
+       text_2, text_4]
+print(test_breadth_first_visit(book, bfv))
+```",2019-12-09T15:06:59+00:00
+comp-think/2019-2020,"Lecture ""Dynamic programming algorithms"", exercise 2",arcangelo7,"```python
+def test_exponentiation(base_number, exponent, expected, solution_dict):
+    if exponentiation(base_number, exponent, solution_dict) == expected:
+        return True
+    else:
+        return False
+
+def exponentiation(base_number, exponent, solution_dict):
+    if base_number ** exponent not in solution_dict:
+        if exponent == 0:
+            return 1
+        elif exponent == 1:
+            return base_number
+        elif exponent == 2:
+            return base_number * base_number
+        else:
+            return base_number * exponentiation(base_number, exponent - 1, solution_dict)
+    return solution_dict[base_number]
+
+print(test_exponentiation(3, 4, 81, dict())) # True
+print(test_exponentiation(17, 1, 17, dict())) # True
+print(test_exponentiation(2, 0, 1, dict())) # True
+```",2019-11-25T11:11:50+00:00
+comp-think/2019-2020,"Lecture ""Dynamic programming algorithms"", exercise 2",sntcristian,"This is a dynamic version of the exponentiation algorithm that uses the property of multiplication between powers with same bases to implement a divide and conquer approach.
+
+``` ruby
+def test_exponentiation(base_number, exp, d, expected):
+    result = exponentiation_dp(base_number, exp, d)
+    if expected == result:
+        return True
+    else:
+        return False
+
+def exponentiation_dp (base_number, exp, d):
+    if (base_number, exp) not in d:
+        if exp == 0:
+            d[(base_number, exp)] = 1
+        elif exp == 1:
+            d[(base_number, exp)] = base_number
+        else:
+            half_exp = exp // 2
+            exponentiation1 = exponentiation_dp(base_number, half_exp, d)
+            exponentiation2 = exponentiation_dp(base_number, half_exp, d)
+            if exp % 2 == 0:
+                d[(base_number, exp)] = exponentiation1 * exponentiation2
+            else:
+                d[(base_number, exp)] = exponentiation1 * exponentiation2 * base_number
+    return d[(base_number, exp)] 
+
+print(test_exponentiation(2, 5, dict(), 32)) #True
+print(test_exponentiation(4, 4, dict(), 256)) #True
+print(test_exponentiation(2, 9, dict(), 512)) #True
+
+``` ",2019-11-26T16:40:09+00:00
+comp-think/2019-2020,"Lecture ""Dynamic programming algorithms"", exercise 2",FrancescoFernicola,"```
+def test_exponentiation(base_number, exponent, expected, solution_dict):
+    result = exponentiation(base_number, exponent, solution_dict)
+    if result == expected:
+        return True
+    else:
+        return False
+
+def exponentiation(base_number, exponent, solution_dict):
+    if exponent not in solution_dict:
+        if exponent == 0:
+            solution_dict[exponent] = 1
+        else:
+            return base_number * exponentiation(base_number, exponent - 1, solution_dict)
+    return solution_dict.get(exponent)
+
+
+print(test_exponentiation(3, 4, 81, dict())) #True
+print(test_exponentiation(17, 1, 17, dict()))  #True
+print(test_exponentiation(2, 0, 1, dict()))  #True
+print(test_exponentiation(0, 0, 1, dict()))  #True
+print(test_exponentiation(1, 0, 1, dict()))  #True
+print(test_exponentiation(0, 2, 0, dict()))  #True
+```",2019-12-03T11:40:28+00:00
+comp-think/2019-2020,"Lecture ""Dynamic programming algorithms"", exercise 2",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/10/exercise-2):
+
+```
+# Test case for the function
+def test_exponentation(base_number, exponent, solution_dict, expected):
+    result = exponentation(base_number, exponent, solution_dict)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def exponentation(base_number, exponent, solution_dict):
+    exp_pair = (base_number, exponent)
+
+    if exp_pair not in solution_dict:
+        if exponent == 0:
+            solution_dict[exp_pair] = 1
+        else:
+            solution_dict[exp_pair] = base_number * exponentation(base_number, exponent - 1, solution_dict)
+
+    return solution_dict[exp_pair]
+
+
+# Tests
+my_dict = {}
+print(test_exponentation(3, 2, my_dict, 9))
+print(test_exponentation(3, 4, my_dict, 81))
+print(test_exponentation(17, 1, my_dict, 17))
+print(test_exponentation(2, 0, my_dict, 1))
+print(test_exponentation(2, 6, my_dict, 64))
+print(test_exponentation(0, 15, my_dict, 0))
+print(test_exponentation(0, 0, my_dict, 1))
+```",2019-12-09T15:01:24+00:00
+comp-think/2019-2020,"Lecture ""Dynamic programming algorithms"", exercise 1",arcangelo7,"```python
+def test_multiplication(int_1, int_2, solution_dict, expected):
+    result = multiplication(int_1, int_2, solution_dict)
+    if expected == result:
+        return True
+    else:
+        return False
+
+def multiplication(int_1, int_2, solution_dict):
+    if int_1 * int_2 not in solution_dict:
+        if int_2 == 0:
+            solution_dict[int_1 * int_2] = 0
+        else:
+            solution_dict[int_1 * int_2] = int_1 + multiplication(int_1, int_2 - 1, solution_dict)
+    return solution_dict[int_1 * int_2]
+
+print(test_multiplication(1, 2, dict(), 2)) #True
+print(test_multiplication(0, 0, dict(), 0)) #True
+print(test_multiplication(3, 2, dict(), 6)) #True
+print(test_multiplication(9, 9, dict(), 81)) #True
+print(test_multiplication(12, 5, dict(), 60)) #True
+print(test_multiplication(25, 8, dict(), 200)) #True
+print(test_multiplication(16, 4, dict(), 64)) #True
+```",2019-11-25T11:06:30+00:00
+comp-think/2019-2020,"Lecture ""Dynamic programming algorithms"", exercise 1",FrancescoFernicola,"```
+def test_multiplication(int_1, int_2, solution_dict, expected):
+    result = multiplication(int_1, int_2, solution_dict)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+
+def multiplication(int_1, int_2, solution_dict):
+    if int_2 not in solution_dict:
+        if int_2 == 0:
+            solution_dict[int_2] = 0
+        else:
+            return int_1 + multiplication(int_1, int_2 - 1, solution_dict)
+    return solution_dict.get(int_2)
+
+
+
+
+print(test_multiplication(0, 0, dict(), 0))
+print(test_multiplication(1, 0, dict(), 0))
+print(test_multiplication(5, 7, dict(), 35))
+print(test_multiplication(5, 1, dict(), 5))
+```",2019-11-26T15:10:39+00:00
+comp-think/2019-2020,"Lecture ""Dynamic programming algorithms"", exercise 1",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/10/exercise-1):
+
+```
+# Test case for the function
+def test_multiplication(int_1, int_2, solution_dict, expected):
+    result = multiplication(int_1, int_2, solution_dict)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def multiplication(int_1, int_2, solution_dict):
+    if int_1 < int_2:
+        mult_pair = (int_1, int_2)
+    else:
+        mult_pair = (int_2, int_1)
+
+    if mult_pair not in solution_dict:
+        if int_2 == 0:
+            solution_dict[mult_pair] = 0
+        else:
+            solution_dict[mult_pair] = int_1 + multiplication(int_1, int_2 - 1, solution_dict)
+
+    return solution_dict[mult_pair]
+
+
+# Tests
+my_dict = {}
+print(test_multiplication(0, 0, my_dict, 0))
+print(test_multiplication(1, 0, my_dict, 0))
+print(test_multiplication(5, 7, my_dict, 35))
+print(test_multiplication(7, 7, my_dict, 49))
+```",2019-12-09T15:00:24+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 3",arcangelo7,"```python
+def test_quicksort(input_list, start, end, expected):
+    if quicksort(input_list, start, end) == expected:
+        return True
+    else:
+        return False
+
+
+def partition(input_list, start, end, pivot_position):
+    divided_list = input_list[start:end+1]
+    pivot_value = input_list[pivot_position]
+    for item in divided_list:
+        if item < pivot_value:
+            input_list.remove(item)
+            input_list.insert(start, item)
+        elif item > pivot_value:
+            input_list.remove(item)
+            input_list.insert(end, item)
+    new_pivot_position = input_list.index(pivot_value)
+    return new_pivot_position
+
+
+def quicksort(input_list, start, end):
+    if start < end: # It means: if there is more than one item to be sorted
+        middle_position = (start + end) // 2
+        pivot_position = partition(input_list, start, end, middle_position) # The pivot position could be the end, the start, the middle, I think that it doesn't matter
+        quicksort(input_list, start, pivot_position - 1) # For all the items left to the pivot, call quicksort recursively
+        quicksort(input_list, pivot_position + 1, end) # For all the items right to the pivot, call quicksort recursively
+    return input_list
+
+
+numbers_list = [0, 9, 5, 6, 7, 3, 2, 4, 8, 1]
+print(test_quicksort(numbers_list, 0, 9, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]))# True
+
+books_list = [""Coraline"", ""American Gods"", ""The Graveyard Book"", ""Good Omens"", ""Neverwhere""]
+print(test_quicksort(books_list, 0, 4, [""American Gods"", ""Coraline"", ""Good Omens"", ""Neverwhere"", ""The Graveyard Book""])) # True
+
+print(test_quicksort([""l""], 0, 0, [""l""])) # True
+```",2019-11-20T16:32:32+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 3",sntcristian,"```ruby
+from partition import partition
+# Import the function 'partition' from the module 'partition' (file 'partition.py')
+
+def test_quicksort(input_list, start, end, expected):
+    result = quicksort(input_list, start, end)
+    if expected == result:
+        return True
+    else:
+        return False
+
+def quicksort(input_list, start, end):
+    pivot_pos = partition(input_list, start, end, start)
+    if len(input_list[start:pivot_pos]) > 1:
+        #while there's still an item to order at the left of the pivot_position
+        quicksort(input_list, start, pivot_pos-1)
+    if len(input_list[pivot_pos:end]) > 1:
+        #while there's still an item to order at the right of the pivot_position
+        quicksort(input_list, pivot_pos+1, end)
+    return input_list
+
+
+print(test_quicksort([""l""], 0, 0, [""l""])) # True
+print(test_quicksort([1], 0, 0, [1])) #True
+print(test_quicksort([3, 4, 1, 2, 9, 8, 2], 0, 6, [1, 2, 2, 3, 4, 8, 9])) #True
+print(test_quicksort([""Coraline"", ""American Gods"", ""The Graveyard Book"", ""Good Omens"", ""Neverwhere""], 0, 4,
+                      [""American Gods"", ""Coraline"", ""Good Omens"", ""Neverwhere"", ""The Graveyard Book""])) #True
+```",2019-11-21T17:17:18+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 3",FrancescoFernicola,"```
+def test_quicksort(input_list, start, end, expected):
+    result = quicksort(input_list, start, end)
+    if result == expected:
+        return True
+    else:
+        return False
+
+def partition(input_list, start, end, pivot_position):
+    pivot = input_list[pivot_position]
+    partitioned_list = input_list[start:end+1]
+    i = start - 1
+    for j in partitioned_list:
+        if j < pivot:
+            j_index = input_list.index(j)
+            i += 1
+            input_list[j_index], input_list[i] = input_list[i], input_list[j_index]
+    input_list.remove(pivot)
+    input_list.insert((i+1), pivot)
+    return input_list.index(pivot)
+
+def quicksort(input_list, start, end):
+    pivot = partition(input_list, start, end, start)
+    if len(input_list[start:pivot]) > 1:
+        quicksort(input_list, start, pivot-1)
+    if len(input_list[pivot:end]) > 1:
+        quicksort(input_list, pivot+1, end)
+    return input_list
+
+
+num_list = [128, 2, 32, 4, 8, 64, 16]
+print(test_quicksort(num_list, 0, 6, [2, 4, 8, 16, 32, 64, 128]))
+FF_list = [ ""Terra"", ""Vivi"", ""Cid"", ""Auron"", ""Sephirot"", ""Kefka"", ""Zidane"", ""Squall""]
+print(test_quicksort(FF_list, 0, 7, [""Auron"", ""Cid"", ""Kefka"", ""Sephirot"", ""Squall"", ""Terra"", ""Vivi"", ""Zidane""]))
+```",2019-12-03T11:04:30+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 3",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/09/exercise-3):
+
+```
+# Test case for the function
+def test_quicksort(input_list, start, end, expected):
+    result = quicksort(input_list, start, end)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def quicksort(input_list, start, end):
+    if start < end:
+        pivot_position = partition(input_list, start, end, start)
+        quicksort(input_list, start, pivot_position - 1)
+        quicksort(input_list, pivot_position + 1, end)
+    return input_list
+
+
+# Run tests
+print(test_quicksort([1], 0, 0, [1]))
+print(test_quicksort([1, 2, 3, 4, 5, 6, 7], 0, 6, [1, 2, 3, 4, 5, 6, 7]))
+print(test_quicksort([3, 4, 1, 2, 9, 8, 2], 0, 6, [1, 2, 2, 3, 4, 8, 9]))
+print(test_quicksort([""Coraline"", ""American Gods"", ""The Graveyard Book"", ""Good Omens"", ""Neverwhere""], 0, 4,
+                     [""American Gods"", ""Coraline"", ""Good Omens"", ""Neverwhere"", ""The Graveyard Book""]))
+```",2019-12-09T14:58:41+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 2",arcangelo7,"The algorithm should work, but it is not a divide and conquer algorithm. The delivery says it doesn't have to be a recursive algorithm. So maybe that's okay. Anyway, if someone can improve it I would be very grateful. Let's say that it's a temporary solution.
+
+```python
+def test_partition(input_list, start, end, pivot_position, expected):
+    if expected == partition(input_list, start, end, pivot_position):
+        return True
+    else:
+        return False
+
+
+def partition(input_list, start, end, pivot_position):
+    divided_list = input_list[start:end+1]
+    pivot_value = input_list[pivot_position]
+    for item in divided_list:
+        if item < pivot_value:
+            input_list.remove(item)
+            input_list.insert(start, item)
+        elif item > pivot_value:
+            input_list.remove(item)
+            input_list.insert(end, item)
+    new_pivot_position = input_list.index(pivot_value)
+    return new_pivot_position
+
+
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 0, 4, 1, 1)) # True
+# The algorithm messes up the list every time, so I instantiate it again each time
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 1, 4, 1, 2)) # True
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 0, 0, 1, 1)) # True
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 5, 5, 1, 1)) # True
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 2, 4, 4, 2)) # True
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 0, 3, 0, 3)) # True
+```",2019-11-19T20:16:42+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 2",arcangelo7,"This is instead the solution by Ang sensei, the video teacher, which is still not a divide and conquer algorithm. Any suggestions?
+
+```python
+def test_partition(input_list, start, end, pivot_position, expected):
+    if expected == partition(input_list, start, end, pivot_position):
+        return True
+    else:
+        return False
+
+
+def partition(input_list, start, end, pivot_position):
+    i = start - 1
+    pivot_item = input_list[pivot_position]
+    for item in input_list[start:end+1]:
+        if item < pivot_item:
+            i += 1
+            current_element = item
+            input_list[input_list.index(item)] = input_list[i]
+            input_list[i] = current_element
+    input_list.remove(pivot_item)
+    input_list.insert(i + 1, pivot_item)
+    return i + 1
+
+
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 0, 4, 1, 1)) # True
+
+# The algorithm messes up the list every time, so I instantiate it again each time
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 1, 4, 1, 2)) # True
+
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 2, 4, 4, 2)) # True
+
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 0, 3, 0, 3)) # True
+```",2019-11-19T21:28:16+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 2",arcangelo7,Reading the third issue I realized that this is probably the ancillary algorithm for that one. So I don't think this should be a divide and conquer algorithm.,2019-11-19T21:41:40+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 2",sntcristian,"```ruby
+def test_partition(input_list, start, end, pivot_position, expected):
+    if expected == partition(input_list, start, end, pivot_position):
+        return True
+    else:
+        return False
+
+def partition(input_list, start, end, pivot_position):
+    pivot = input_list[pivot_position]
+    for position, item in enumerate(input_list):
+        if start <= position and end >= position:
+            if item > pivot:
+                input_list.insert(pivot_position + 1, input_list.pop(position))
+            elif item < pivot:
+                input_list.insert(pivot_position, input_list.pop(position))
+            pivot_position = input_list.index(pivot)
+    return pivot_position
+
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 0, 4, 0, 4)) #True
+```",2019-11-21T17:07:48+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 2",elisasilvad,"This one is my solution: 
+![Excercise 9 2](https://user-images.githubusercontent.com/56439346/69477546-c57afe80-0de7-11ea-8918-cf5cbe26c2ce.png)
+
+This is the solution reached following the video's suggestions:
+![Excercise 9 2 1](https://user-images.githubusercontent.com/56439346/69477556-d1ff5700-0de7-11ea-8391-6cee69291577.png)
+",2019-11-23T10:54:36+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 2",FrancescoFernicola,"```
+def test_partition(input_list, start, end, pivot_position, expected):
+    result = partition(input_list, start, end, pivot_position)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+def partition(input_list, start, end, pivot_position):
+    pivot = input_list[pivot_position]
+    partitioned_list = input_list[start:end+1]
+    i = start - 1
+    for j in partitioned_list:
+        if j < pivot:
+            j_index = input_list.index(j)
+            i += 1
+            input_list[j_index], input_list[i] = input_list[i], input_list[j_index]
+    input_list.remove(pivot)
+    input_list.insert((i+1), pivot)
+    return input_list.index(pivot)
+
+
+
+num_list = [2, 4, 42, 20, 16]
+print(test_partition(num_list, 1, 4, 4, 2))
+num_list = [2, 4, 42, 20, 16]
+print(test_partition(num_list, 0, 4, 2, 4))
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 1, 4, 1, 2))
+my_list = [""The Graveyard Book"", ""Coraline"", ""Neverwhere"", ""Good Omens"", ""American Gods""]
+print(test_partition(my_list, 2, 4, 0, 4))
+FF_list = [ ""Terra"", ""Vivi"", ""Cid"", ""Auron"", ""Sephirot"", ""Kefka"", ""Zidane"", ""Squall""]
+print(test_partition(FF_list, 2, 6, 4, 5))
+```",2019-11-25T22:01:29+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 2",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/09/exercise-2):
+
+```
+# Test case for the function
+def test_partition(input_list, start, end, pivot_position, expected):
+    p_value = input_list[pivot_position]
+    result = partition(input_list, start, end, pivot_position)
+    output = expected == result and p_value == input_list[result]
+
+    for item in input_list[0:result]:
+        output = output and item <= p_value
+    for item in input_list[result + 1:len(input_list)]:
+        output = output and item >= p_value
+
+    return output
+
+
+# Code of the function
+def partition(input_list, start, end, pivot_position):
+    pivot_value = input_list[pivot_position]
+
+    swap_index = start - 1
+    for index in range(start, end + 1):
+        if input_list[index] < pivot_value:
+            swap_index += 1
+            if swap_index == pivot_position:
+                pivot_position = index
+            swap(input_list, swap_index, index)
+
+    new_pivot_position = swap_index + 1
+    swap(input_list, pivot_position, new_pivot_position)
+
+    return new_pivot_position
+
+
+def swap(input_list, old_index, new_index):
+    cur_value = input_list[old_index]
+    input_list[old_index] = input_list[new_index]
+    input_list[new_index] = cur_value
+
+
+# Run tests
+print(test_partition([1, 2, 3, 4, 5], 0, 4, 0, 0))
+print(test_partition([4, 5, 3, 1, 7], 0, 4, 0, 2))
+print(test_partition([4, 5, 3, 1, 7], 0, 4, 2, 1))
+print(test_partition([7, 5, 3, 1, 4], 0, 4, 4, 2))
+print(test_partition([1, 9, 7, 5, 9, 3, 1, 4, 2, 3], 0, 9, 1, 8))
+print(test_partition([1, 9, 7, 5, 9, 3, 1, 4, 2, 3], 0, 9, 0, 0))
+print(test_partition([1, 9, 7, 5, 9, 3, 1, 4, 2, 3], 0, 9, 3, 6))
+print(test_partition([1, 2, 2, 3, 9, 8, 4], 1, 2, 1, 1))
+```",2019-12-09T14:57:53+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 1",ereuhl,"My solution:
+```python
+def binary_search(item, ordered_list, start, end):
+    middle = int((start+end) / 2)
+    if start > end:
+        return None
+    if ordered_list[middle] == item:
+        return middle
+    elif ordered_list[middle] < item:
+        return binary_search(item, ordered_list, middle+1, end)
+    elif ordered_list[middle] > item:
+        return binary_search(item, ordered_list, start, middle-1)
+    else:
+        return None
+```
+The same but with a lot of console output to easier understand the execution of the algorithm:
+```python
+def binary_search(item, ordered_list, start, end):
+    middle = int((start+end) / 2)
+    print(""\nStarting a binary search."",
+          ""\n--> Parameters: item:"", item, ""\t ordered_list:"", ordered_list, ""\t start:"", start, ""\t end:"", end,
+          ""\n--> Currently regarded list: "", ordered_list[start:end + 1],
+          ""\n--> Middle item of the current list:"", ordered_list[middle])
+
+    if start > end:
+        print(""\n--> The value of start is bigger than end."",
+              ""\n--> Result: The item was not found."")
+        return None
+
+    print(""Checking the middle item of the current list against the searched item."")
+    if ordered_list[middle] == item:
+        print(""--> Result: The item was found at position"", middle, ""of the input list."")
+        return middle
+    elif ordered_list[middle] < item:
+        print(""--> The searched item is larger than the current middle item."",
+              ""\n--> Continue the search in the larger part of the current list."")
+        return binary_search(item, ordered_list, middle+1, end)
+    elif ordered_list[middle] > item:
+        print(""--> The searched item is smaller than the current middle item."",
+              ""\n--> Continue the search in the smaller part of the current list."")
+        return binary_search(item, ordered_list, start, middle-1)
+    else:
+        print(""--> Result: The item was not found."")
+        return None
+```
+Test cases:
+```python
+def test_binary_search(item, ordered_list, start, end, expected):
+    result = binary_search(item, ordered_list, start, end)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+test_list = [0, 10, 20, 30, 40, 50, 60]
+print(""\nTest 1 -->"", test_binary_search(30, test_list, 0, 6, 3), ""\n"")  # True
+print(""\nTest 2 -->"", test_binary_search(30, test_list, 0, 2, None), ""\n"")  # True
+print(""\nTest 3 -->"", test_binary_search(30, test_list, 3, 6, 3), ""\n"")  # True
+print(""\nTest 4 -->"", test_binary_search(70, test_list, 0, 6, None), ""\n"")  # True
+print(""\nTest 5 -->"", test_binary_search(0, test_list, 0, 6, 0), ""\n"")  # True
+print(""\nTest 6 -->"", test_binary_search(10, test_list, 0, 6, 1), ""\n"")  # True
+print(""\nTest 7 -->"", test_binary_search(60, test_list, 0, 6, 6), ""\n"")  # True
+print(""\nTest 8 -->"", test_binary_search(50, test_list, 0, 6, 5), ""\n"")  # True
+print(""\nTest 9 -->"", test_binary_search(-10, test_list, 0, 4, None), ""\n"")  # True
+print(""\nTest 10 -->"", test_binary_search(10, test_list, 0, 1, 1), ""\n"")  # True
+```",2019-11-19T23:55:20+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 1",FrancescoFernicola,"```
+def test_binary_search(item, ordered_list, start, end, expected):
+    result = binary_search(item, ordered_list, start, end)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+def binary_search(item, ordered_list, start, end):
+    if item in ordered_list:
+        mid = (start + end) // 2
+        if start > end:
+            return None
+        if item == ordered_list[end]:
+            return end
+        elif item == ordered_list[start]:
+            return start
+        elif item == ordered_list[mid]:
+            return mid
+        elif item > ordered_list[mid]:
+            return binary_search(item, ordered_list, mid + 1, end)
+        elif item < ordered_list[mid]:
+            return binary_search(item, ordered_list, start, mid - 1)
+        else:
+            return None
+    else:
+        return None
+
+
+num_list = [2, 4, 8, 16, 32, 64, 128]
+FF_list = [""Auron"", ""Cid"", ""Kefka"", ""Sephirot"", ""Squall"", ""Terra"", ""Vivi"", ""Zidane""]
+print(test_binary_search(64, num_list, 0, 6, 5))
+print(test_binary_search(16, num_list, 0, 6, 3))
+print(test_binary_search(4, num_list, 0, 6, 1))
+print(test_binary_search(128, num_list, 0, 6, 6))
+print(test_binary_search(2, num_list, 0, 6, 0))
+print(test_binary_search(42, num_list, 0, 7, None))
+print(test_binary_search(""Auron"", FF_list, 0, 7, 0))
+print(test_binary_search(""Zidane"", FF_list, 0, 7, 7))
+print(test_binary_search(""Kefka"", FF_list, 0, 7, 2))
+print(test_binary_search(""Vivi"", FF_list, 0, 7, 6))
+print(test_binary_search(""Squall"", FF_list, 0, 7, 4))
+print(test_binary_search(""Zaphod Beeblebrox"", FF_list, 0, 7, None))
+```",2019-11-20T19:49:00+00:00
+comp-think/2019-2020,"Lecture ""Divide and conquer algorithms"", exercise 1",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/09/exercise-1):
+
+```
+# Test case for the function
+def test_binary_search(item, ordered_list, start, end, expected):
+    result = binary_search(item, ordered_list, start, end)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def binary_search(item, ordered_list, start, end):
+    if start <= end:
+        mid = ((end - start) // 2) + start
+        mid_item = ordered_list[mid]
+        if item == mid_item:
+            return mid
+        elif mid_item < item:
+            return binary_search(item, ordered_list, mid + 1, end)
+        else:
+            return binary_search(item, ordered_list, start, mid - 1)
+
+
+# Tests
+print(test_binary_search(3, [1, 2, 3, 4, 5], 0, 4, 2))
+print(test_binary_search(""Denver"", [""Alice"", ""Bob"", ""Catherine"", ""Charles""], 0, 3, None))
+print(test_binary_search(""Harry"", [""Harry"", ""Hermione"", ""Ron""], 0, 2, 0))
+```",2019-12-09T14:56:14+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",ereuhl,"```python
+def fib(n):
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+
+def test_fib(n, expected):
+    result = fib(n)
+    if result == expected:
+        return True
+    else:
+        return False
+
+print(test_fib(0, 0)) # True
+print(test_fib(1, 1)) # True
+print(test_fib(2, 1)) # True
+print(test_fib(3, 2)) # True
+print(test_fib(4, 3)) # True
+print(test_fib(5, 5)) # True
+print(test_fib(6, 8)) # True
+```",2019-11-11T10:45:30+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",arcangelo7,"```python
+def test_fib(n, expected):
+    if fib(n) == expected:
+        return True
+    else:
+        return False
+
+def fib(n):
+    if n <= 0:
+        return n
+    elif n == 1:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+
+print(test_fib(7, 13)) # True
+```",2019-11-11T11:21:25+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",Vince2992,"![Ex2_11(A)](https://user-images.githubusercontent.com/56563522/68594188-4ad0eb80-0497-11ea-98ef-80115b8bf25b.png)
+",2019-11-11T14:24:13+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",FrancescoFernicola,"``` 
+def test_fib(n, expected):
+    result = fib(n)
+    if result == expected:
+        return True
+    else:
+        return False
+
+def fib(n):
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+
+
+print(test_fib(0, 0)) #True
+print(test_fib(1, 1)) #True
+print(test_fib(2, 1)) #True
+print(test_fib(4, 3)) #True
+print(test_fib(9, 34)) #True 
+```",2019-11-12T11:17:02+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",arimuti,"![image](https://user-images.githubusercontent.com/56594207/68809017-43623b80-066b-11ea-9d54-a844e321dcfe.png)
+",2019-11-13T22:13:58+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",aschimmenti,"![fib1](https://user-images.githubusercontent.com/56439200/69012199-79593580-0973-11ea-945b-22419a8cd4ae.PNG)
+![fib2](https://user-images.githubusercontent.com/56439200/69012200-79f1cc00-0973-11ea-90d5-dba49844dfba.PNG)
+",2019-11-17T18:50:20+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",elisasilvad,"![Excercise 8 2](https://user-images.githubusercontent.com/56439346/69012449-42d0ea00-0976-11ea-8311-adeabe383bee.png)
+",2019-11-17T19:10:33+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/08/exercise-2):
+
+```
+# Test case for the function
+def test_fib(n, expected):
+    result = fib(n)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def fib(n):
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+
+
+# Tests
+print(test_fib(0, 0))
+print(test_fib(1, 1))
+print(test_fib(2, 1))
+print(test_fib(7, 13))
+print(test_fib(-15, 0))
+```
+
+@aschimmenti please look again at the definition of Fibonacci, because there is something wrong in your implementation. @elisasilvad please remember that all the tests must pass.
+",2019-11-23T10:14:54+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 2",aschimmenti,"```
+def fib(n):
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    else:
+       return fib(n-1) + fib(n-2)
+
+fibn = []
+requested_number = input(""Type the fibonacci number you want: "")
+for i in range(int(requested_number)+1):
+    fibn.append(fib(i))
+    print(fibn)
+
+def test_fib(n, expected):
+    result = fib(n)
+    if result == expected:
+        return True
+    else:
+        return False
+print(test_fib(n, expected))
+```
+- print(test_fib(10, 55)) 
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+True
+- print(test_fib(2, 55)) 
+[0, 1, 1]
+False
+- print(test_fib(-10, 55)) 
+None
+False
+-print(test_fib(-10, 55)
+[0, 1, 1, 2, 3, 5, 8, 13]
+True
+
+",2019-12-12T15:41:30+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 1 ",ereuhl,"```python
+def exponentiation(base_number, exponent):
+    if exponent == 0:
+        return 1
+    elif exponent == 1:
+        return base_number
+    elif exponent == 2:
+        return  base_number*base_number
+    else:
+        return base_number*exponentiation(base_number, exponent-1)
+
+def test_exponentiation(base_number, exponent, expected):
+    result = exponentiation(base_number, exponent)
+    if result == expected:
+        return True
+    else:
+        return False
+
+print(test_exponentiation(3, 4, 81)) # True
+print(test_exponentiation(17, 1, 17)) # True
+print(test_exponentiation(2, 0, 1)) # True
+```",2019-11-11T10:43:33+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 1 ",arcangelo7,"```python
+def test_exponentiation(base_number, exponent, expected):
+    if exponentiation(base_number, exponent) == expected:
+        return True
+    else:
+        return False
+
+def exponentiation(base_number, exponent):
+    if exponent == 0:
+        return 1
+    elif exponent == 1:
+        return base_number
+    elif exponent == 2:
+        return base_number * base_number
+    else:
+        return base_number * exponentiation(base_number, exponent - 1)
+
+print(test_exponentiation(3, 4, 81)) # True
+print(test_exponentiation(17, 1, 17)) # True
+print(test_exponentiation(2, 0, 1)) # True
+```",2019-11-11T11:07:23+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 1 ",Vince2992,"![Ex1_11(A)](https://user-images.githubusercontent.com/56563522/68592363-30950e80-0493-11ea-83b2-555bf5e1883b.png)
+![Ex1_11(B)](https://user-images.githubusercontent.com/56563522/68592370-3559c280-0493-11ea-98a2-44b765e775d6.png)
+",2019-11-11T13:55:14+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 1 ",FrancescoFernicola,"Here I am considering the value of 0^0 in algebra, namely 0^0=1. 
+If we were to consider it from the point of view of mathematical analysis, we would have to leave it undefined, but then I wouldn't really know how to implement the recursive element.
+ 
+
+``` 
+def test_exponentiation(base_number, exponent, expected):
+    result = exponentiation(base_number, exponent)
+    if result == expected:
+        return True
+    else:
+        return False
+
+def exponentiation(base_number, exponent):
+    if exponent == 0:
+        return 1
+    else:
+        return base_number * exponentiation(base_number, exponent - 1)
+
+
+print(test_exponentiation(3, 4, 81)) #True
+print(test_exponentiation(17, 1, 17))  #True
+print(test_exponentiation(2, 0, 1))  #True
+print(test_exponentiation(0, 0, 1))  #True
+print(test_exponentiation(1, 0, 1))  #True
+print(test_exponentiation(0, 2, 0))  #True
+```",2019-11-12T11:04:37+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 1 ",arimuti,"![image](https://user-images.githubusercontent.com/56594207/68777976-c74c0180-0632-11ea-932e-3e5c4d195074.png)
+",2019-11-13T15:29:39+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 1 ",aschimmenti,"![exponentiation](https://user-images.githubusercontent.com/56439200/69012000-f3d48600-0970-11ea-9f5a-5b0887fd3994.PNG)
+True 
+True
+True ",2019-11-17T18:32:23+00:00
+comp-think/2019-2020,"Lecture ""Recursion"", exercise 1 ",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/08/exercise-1):
+
+```
+# Test case for the algorithm
+def test_exponentation(base_number, exponent, expected):
+    result = exponentation(base_number, exponent)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the algorithm
+def exponentation(base_number, exponent):
+    if exponent == 0:
+        return 1
+    else:
+        return base_number * exponentation(base_number, exponent - 1)
+
+
+print(test_exponentation(3, 4, 81))
+print(test_exponentation(17, 1, 17))
+print(test_exponentation(2, 0, 1))
+print(test_exponentation(0, 15, 0))
+print(test_exponentation(0, 0, 1))
+```
+",2019-11-23T10:08:14+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",sntcristian,"```ruby
+def set_organize(input_set):
+    set_hobbit = set()
+    set_magician = set()
+    output_dict = dict()
+    output_dict[""hobbit""] = set_hobbit
+    output_dict[""magician""] = set_magician
+    for element in input_set:
+        if element in set({""Frodo"", ""Pippin"",""Merry"", ""Sam""}):
+            set_hobbit.add(element)
+        if element in set({""Gandalf"", ""Saruman""}):
+            set_magician.add(element)
+    return output_dict
+
+tolkien_dict = set_organize(my_set)
+print(tolkien_dict)
+# it prints the dictionary {'hobbit': {'Frodo', 'Sam', 'Pippin', 'Merry'}, 'magician': {'Saruman', 'Gandalf'}}
+
+```",2019-11-06T15:24:06+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",arcangelo7,"```python
+my_dict = {""hobbit"": {""Frodo"", ""Sam"", ""Pippin"", ""Merry""}, ""magician"": {""Saruman"", ""Gandalf""}}
+```",2019-11-06T17:31:02+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",Vince2992,"![Ex3_10](https://user-images.githubusercontent.com/56563522/68343536-4ef2b700-00ed-11ea-8594-aa3294ea06bf.png)
+",2019-11-06T22:29:46+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",ariele-santello,"![Schermata 2019-11-07 alle 18 53 22](https://user-images.githubusercontent.com/56439239/68488927-62fdfc00-0246-11ea-96f0-5946122ab089.png)
+",2019-11-08T15:39:59+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",FrancescoFernicola,"```
+set_hobbit = {""Frodo"", ""Sam"", ""Pippin"", ""Merry""}
+set_magician = {""Saruman"", ""Gandalf""}
+
+LoTR_dictionary = dict()
+LoTR_dictionary[""hobbit""] = set_hobbit
+LoTR_dictionary[""magician""] = set_magician
+
+print(LoTR_dictionary)
+
+==============================================================================================
+{'hobbit': {'Merry', 'Sam', 'Frodo', 'Pippin'}, 'magician': {'Saruman', 'Gandalf'}}
+==============================================================================================
+```
+",2019-11-09T13:03:34+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",elisasilvad,"![Excercise 5 3](https://user-images.githubusercontent.com/56439346/68543169-d8d3a600-03b3-11ea-81d4-892f8e5d1053.png)
+",2019-11-10T11:16:19+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",ereuhl,"```python
+set_hobbit = {""Frodo"", ""Sam"", ""Pippin"", ""Merry""}
+set_magician = {""Saruman"", ""Gandalf""}
+my_dictionary = {""hobbit"": set_hobbit, ""magician"": set_magician}
+
+print(my_dictionary)
+# --> {'hobbit': {'Pippin', 'Frodo', 'Sam', 'Merry'}, 'magician': {'Gandalf', 'Saruman'}}
+```",2019-11-10T15:13:05+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",marcograsso,"![unordered_ex3](https://user-images.githubusercontent.com/56439271/68547504-907fac80-03e2-11ea-9d7a-4713015cccf7.png)
+",2019-11-10T16:50:39+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",aschimmenti,"
+![dictionary out of set](https://user-images.githubusercontent.com/56439200/69011702-b6bac480-096d-11ea-96c6-d59ada6227fe.PNG)
+{'hobbit': {'Pippin', 'Merry', 'Sam', 'Frodo'}, 'magician': {'Saruman', 'Gandalf'}, 'other': {}}",2019-11-17T18:09:03+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",noreanystrom,"![image](https://user-images.githubusercontent.com/56627803/69495649-86bd7500-0ec9-11ea-846f-7441222f5160.png)
+Prints -> {'hobbit': {'Pippin', 'Sam', 'Frodo', 'Mary'}, 'magician': {'Gandalf', 'Saruman'}}",2019-11-24T13:50:15+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 3",morinigiu,"<img width=""814"" alt=""Schermata 2019-12-08 alle 17 34 05"" src=""https://user-images.githubusercontent.com/56439205/70392502-0460a500-19e1-11ea-80a2-c5fb08604f74.png"">
+",2019-12-08T16:34:55+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 2",sntcristian,"```ruby
+my_set = set()
+
+my_set.add(""Bilbo"")
+
+my_set.add(""Frodo"")
+
+my_set.add(""Sam"")
+
+my_set.add(""Pippin"")
+
+my_set.add(""Merry"")
+
+my_set.remove(""Bilbo"")
+#my_set is now consisting in {""Frodo"", ""Pippin"", ""Sam"", ""Merry""}
+
+my_set.add(""Galadriel"")
+#my_set is now consisting in {""Frodo"", ""Pippin"", ""Sam"", ""Merry"", ""Galadriel""}
+
+my_set.update(set({""Saruman"", ""Frodo"", ""Gandalf""}))
+#my_set is now consisting in {""Frodo"", ""Pippin"", ""Sam"", ""Merry"", ""Galadriel"", ""Gandalf"", ""Saruman""}
+
+```",2019-11-06T15:18:12+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 2",arcangelo7,"```python
+my_set = {""Bilbo"", ""Frodo"", ""Sam"", ""Pippin"", ""Merry""}
+my_set.remove(""Bilbo"") # it removes ""Bilbo""
+# my_set became:
+# {'Sam', 'Frodo', 'Merry', 'Pippin'}
+my_set.add(""Galadriel"") # It adds ""Galadriel"" to the set without any particular order
+# my_set became:
+# {'Sam', 'Frodo', 'Galadriel', 'Merry', 'Pippin'}
+my_set.update(set({""Saruman"", ""Frodo"", ""Gandalf""})) # It only adds ""Saruman"" and ""Gandalf"", because ""Frodo"" is already included
+# my_set became:
+# {'Saruman', 'Sam', 'Frodo', 'Galadriel', 'Merry', 'Pippin', 'Gandalf'}
+```",2019-11-06T15:57:05+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 2",Vince2992,"![Ex2_10](https://user-images.githubusercontent.com/56563522/68341557-fe795a80-00e8-11ea-9909-bc8883dc3293.png)
+",2019-11-06T21:58:53+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 2",ariele-santello,"![Schermata 2019-11-06 alle 20 28 56](https://user-images.githubusercontent.com/56439239/68488991-84f77e80-0246-11ea-81fa-afabbad3e41d.png)
+",2019-11-08T15:40:54+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 2",FrancescoFernicola,"```
+
+my_set = {""Bilbo"", ""Frodo"", ""Sam"", ""Pippin"", ""Merry""}
+
+my_set.remove(""Bilbo"")
+# this removes the element ""Bilbo"" from the set
+
+my_set.add(""Galadriel"")
+# this adds the element ""Galadriel"" to the set
+
+my_set.update(set({""Saruman"", ""Frodo"", ""Gandalf""}))
+# this adds the element ""Saruman"" and ""Gandalf"" to the set
+
+```",2019-11-09T11:03:34+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 2",elisasilvad,"![Excercise 5 2](https://user-images.githubusercontent.com/56439346/68543156-b5a8f680-03b3-11ea-901e-0fbbb5906944.png)
+",2019-11-10T11:15:24+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 2",marcograsso,"![unordered_ex2](https://user-images.githubusercontent.com/56439271/68547494-7645ce80-03e2-11ea-95d2-ea25c85f31d9.png)
+",2019-11-10T16:50:05+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 2",morinigiu,"<img width=""764"" alt=""Schermata 2019-12-08 alle 17 14 30"" src=""https://user-images.githubusercontent.com/56439205/70392251-46d4b280-19de-11ea-8af6-d6fb4e5bf312.png"">
+",2019-12-08T16:15:12+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 1",sntcristian,"```ruby
+my_set = set()
+my_set.add(""Bilbo"")
+my_set.add(""Frodo"")
+my_set.add(""Sam"")
+my_set.add(""Pippin"")
+my_set.add(""Merry"")
+```",2019-11-06T15:15:42+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 1",arcangelo7,"```python
+lotr_characters = {""​Bilbo"", ""​Frodo"", ""​Sam"", ""​Pippin"", ""​Merry""}
+```",2019-11-06T15:48:28+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 1",Vince2992,"![Ex1_10](https://user-images.githubusercontent.com/56563522/68340817-6dee4a80-00e7-11ea-8c8c-bb433d184495.png)
+",2019-11-06T21:47:49+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 1",aschimmenti,"![set  1](https://user-images.githubusercontent.com/56439200/68432975-c5f38280-01b5-11ea-817c-49f981360a98.PNG)
+",2019-11-07T22:24:44+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 1",FrancescoFernicola,"```
+
+my_set = set()
+my_set.add(""Bilbo"")
+my_set.add(""Frodo"")
+my_set.add(""Sam"")
+my_set.add(""Pippin"")
+my_set.add(""Merry"")
+
+print(my_set)
+
+```",2019-11-09T10:58:57+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 1",elisasilvad,"![Excercise 5 1](https://user-images.githubusercontent.com/56439346/68543141-8e522980-03b3-11ea-95af-daf876617fe4.png)
+",2019-11-10T11:13:58+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 1",marcograsso,"![unordered_ex1](https://user-images.githubusercontent.com/56439271/68547488-6201d180-03e2-11ea-885a-4a974a765b41.png)
+",2019-11-10T16:49:17+00:00
+comp-think/2019-2020,"Lecture ""Organising information: unordered structures"", exercise 1",morinigiu,"<img width=""682"" alt=""Schermata 2019-12-08 alle 17 09 35"" src=""https://user-images.githubusercontent.com/56439205/70392191-9666ae80-19dd-11ea-8778-1a5f3ee4a878.png"">
+",2019-12-08T16:10:18+00:00
+comp-think/2019-2020,Bonus exercise (AtariGo),arcangelo7,"```python 
+import random
+
+def place_stone(color, black, white):
+    possible_positions = {(x, y) for x in range(7) for y in range(7)}
+    positions_taken = black.union(white)
+    output_possible_positions = possible_positions.difference(positions_taken)
+
+    return f""{color}{random.sample(output_possible_positions, 1)}""
+
+color = ""black""
+black_positions = {(1, 2), (4, 2)}
+white_positions = {(2, 4), (4, 4)}
+
+print(place_stone(color, black_positions, white_positions))
+# It prints black[(2, 1)], for example
+
+```",2019-11-05T19:50:20+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 5",arcangelo7,"```python
+def my_reversed(input_list):
+    reversed_list = list()
+    list_length = len(input_list)
+
+    for index in range(list_length):
+        reversed_list.append(input_list[list_length - index - 1])
+
+    return reversed_list
+
+def test_my_reversed(input_list, expected):
+    result = my_reversed(input_list)
+
+    if result == expected:
+        return True
+    else:
+        return False
+
+print(test_my_reversed([""Coraline"", ""American Gods"", ""The Graveyard Book"", ""Good Omens"", ""Neverwhere""], ['Neverwhere', 'Good Omens', 'The Graveyard Book', 'American Gods', 'Coraline']))
+# It prints True
+
+```",2019-11-05T10:19:19+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 5",sntcristian,"![Screenshot (9)](https://user-images.githubusercontent.com/52455931/68217750-6f364f00-ffe3-11e9-9e6d-302d62477268.png)
+",2019-11-05T14:46:34+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 5",NoonShin,"``` python
+def my_reversed(input_list):
+    input_length = len(input_list)
+    output = list()
+    
+    for i in range(input_length):
+        output.append(input_list[input_length-i-1])
+    
+    return output
+    
+def test_my_reversed(input, expected):
+    return my_reversed(input) == expected
+   
+
+volumes = ['Preludes and Nocturnes', 'The Dolls House', 'Dream Country', 'Season of Mists', 'A Game of You', 'Fables and Reflections', 'Brief Lives', 'Worlds End', 'The Kindly Ones', 'The Wake']
+
+print(test_my_reversed(volumes, list(reversed(volumes))))
+```",2019-11-05T22:57:29+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 5",FrancescoFernicola,"My version works but it takes some more steps than the others. I forgot to consider range/index which would've probably been a better way to deal with the problem. Props to @arcangelo7 @sntcristian and @NoonShin!
+
+![Screenshot 2019-11-07 17 21 00](https://user-images.githubusercontent.com/56536141/68407481-f02c4c80-0183-11ea-9d3e-f18b111ac460.png)
+",2019-11-07T16:31:17+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 5",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/06/exercise-5):
+
+```
+# Test case for the function
+def test_my_reversed(input_list, expected):
+    result = my_reversed(input_list)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def my_reversed(input_list):
+    l = list()
+    for item in input_list:
+        l.insert(0, item)
+    return l
+
+
+# Tests
+print(test_my_reversed([], []))
+print(test_my_reversed([1], [1]))
+print(test_my_reversed([1, 2, 4, 3, 4, 7, 2], [2, 7, 4, 3, 4, 2, 1]))
+print(test_my_reversed([""a"", ""b"", ""c"", ""d""], [""d"", ""c"", ""b"", ""a""]))
+```
+",2019-11-08T13:25:20+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 5",aschimmenti,"![lista reversed 1](https://user-images.githubusercontent.com/56439200/69010803-a7367e00-0963-11ea-9090-d5e64a9f6f41.PNG)
+![lista reversed 2](https://user-images.githubusercontent.com/56439200/69010804-a7367e00-0963-11ea-86d0-7c39f28c6c02.PNG)
+",2019-11-17T16:53:57+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",arcangelo7,"We didn't talk about the reverse() method in the classroom (different from reversed(), because it returns a list and not an iterator), so there's probably a smarter way to do this exercise.
+
+```python
+def my_range(stop_number):
+    output_range_object = list()
+    current_number = stop_number
+
+    while current_number >= 1:
+        output_range_object.append(current_number - 1)
+        current_number -= 1
+
+    output_range_object.reverse()
+    return output_range_object
+
+def test_my_range(stop_number, expected):
+    result = my_range(stop_number)
+
+    if result == expected:
+        return True
+    else:
+        return False
+
+print(test_my_range(5, [0, 1, 2, 3, 4]))
+# It prints True
+```",2019-11-05T09:54:41+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",sntcristian,"![Screenshot (8)](https://user-images.githubusercontent.com/52455931/68217595-2bdbe080-ffe3-11e9-8a7f-f980b62a2755.png)
+",2019-11-05T14:44:49+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",arcangelo7,"_Replying to https://github.com/comp-think/2019-2020/issues/19#issuecomment-549853632 by @sntcristian:_
+
+I didn't understand what the `if len(output_range) != 0` control is for. I think it works even without it",2019-11-05T20:10:14+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",sntcristian,Right! I haven't thought it was that simple.,2019-11-05T20:22:39+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",NoonShin,"``` python
+def my_range(stop_number):
+    output = list()
+    i = 0
+    while i < stop_number:
+        output.append(i)
+        i += 1
+    return output
+    
+def test_my_range(input, expected):
+    return my_range(input) == expected
+        
+print(test_my_range(5, range(5)))
+```",2019-11-05T22:46:34+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",FrancescoFernicola,"![Screenshot 2019-11-07 17 22 18](https://user-images.githubusercontent.com/56536141/68407377-bd825400-0183-11ea-8359-d55f3defe791.png)
+",2019-11-07T16:26:45+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/06/exercise-4):
+
+```
+# Test case for the function
+def test_my_range(stop_number, expected):
+    result = my_range(stop_number)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def my_range(stop_number):
+    l = list()
+    while stop_number > 0:
+        stop_number = stop_number - 1
+        l.insert(0, stop_number)
+    return l
+
+
+# Tests
+print(test_my_range(0, []))
+print(test_my_range(1, [0]))
+print(test_my_range(4, [0, 1, 2, 3]))
+```
+
+Please be aware that, formally speaking, `range(5)` is not a list. Thus, checking if the object returned by the function `range` is a list will return False anyway.",2019-11-08T12:15:38+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",NoonShin,Thanks for the heads-up about the ```range``` function @essepuntato. I mistakenly used a Python 2.7 interpreter for testing my solution to this one and it worked fine on that (since in Python 2 ```range``` used to create lists instead of iterators).,2019-11-08T17:05:16+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 4",aschimmenti,"
+def my_range(num):
+output_list = []
+'''n = 0
+#start from 0 which is the first element 
+'''while n < num:
+#keep appending the n to the list until n is equal to num-1
+'''''output_list.append(n)
+'''''''''n = n+1 
+''''''return output_list
+print(my_range(10) == list(range(10)))
+
+#it prints True ",2019-11-17T16:01:21+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 3",arcangelo7,"```python
+def my_enumerate(input_list):
+    output_enumerate_object = []
+
+    for index in range(len(input_list)):
+        tuple = (index, input_list[index])
+        output_enumerate_object.append(tuple)
+
+    return output_enumerate_object
+
+def test_my_enumerate(input_list, expected):
+    result = my_enumerate(input_list)
+
+    if result == expected:
+        return True
+    else:
+        return False
+
+print(test_my_enumerate([""Remember"", ""the"", ""fifth"", ""of"", ""November""], [(0, 'Remember'), (1, 'the'), (2, 'fifth'), (3, 'of'), (4, 'November')]))
+# It prints True
+```",2019-11-05T09:30:26+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 3",sntcristian,"![Screenshot (7)](https://user-images.githubusercontent.com/52455931/68217477-f33c0700-ffe2-11e9-8233-ed197aaefa94.png)
+",2019-11-05T14:43:06+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 3",NoonShin,"``` python
+def my_enumerate(input_list):
+    input_length = len(input_list)
+    output = [(index, input_list[index]) for index in range(input_length)]
+    return output
+    
+    
+def test_my_enumerate(input, expected)
+    return my_enumerate(input) == expected
+    
+    
+volumes = ['Preludes and Nocturnes', 'The Dolls House', 'Dream Country', 'Season of Mists', 'A Game of You', 'Fables and Reflections', 'Brief Lives', 'Worlds End', 'The Kindly Ones', 'The Wake']
+
+print(test_my_enumerate(volumes, [(0, 'Preludes and Nocturnes'), (1, 'The Dolls House'), (2, 'Dream Country'), (3, 'Season of Mists'), (4, 'A Game of You'), (5, 'Fables and Reflections'), (6, 'Brief Lives'), (7, 'Worlds End'), (8, 'The Kindly Ones'), (9, 'The Wake')]))
+```",2019-11-05T22:36:50+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 3",FrancescoFernicola,"![Screenshot 2019-11-07 17 25 21](https://user-images.githubusercontent.com/56536141/68407331-a7749380-0183-11ea-94eb-cda44c846533.png)
+",2019-11-07T16:26:12+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 3",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/06/exercise-3):
+
+```
+# Test case for the function
+def test_my_enumerate(input_list, expected):
+    result = my_enumerate(input_list)
+    if expected == result:
+        return True
+    else:
+        return False
+
+
+# Code of the function
+def my_enumerate(input_list):
+    l = list()
+    for i in range(len(input_list)):
+        l.append((i, input_list[i]))
+    return l
+
+
+# Tests
+print(test_my_enumerate([], []))
+print(test_my_enumerate([""a"", ""b"", ""c""], [(0, ""a""), (1, ""b""), (2, ""c"")]))
+```
+
+An important point: the rationale of using TDD to test the code is that **all the tests** must be passed (and this, somehow, guarantees the correctness of the code). If a test is not passed, it means that there is something wrong in the code. Thus, please, avoid using tests that fail on purpose since this does not demonstrate the correctness of your code.",2019-11-08T12:09:16+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 3",aschimmenti,"def my_enumerate(input_list):
+#implement the enumerate action without using enumerate() 
+    output_list = []
+    for i in range(len(input_list)):
+        output_list.append((i, input_list[i]))
+    return output_list
+
+print(my_enumerate([1, 2, 3, 4])==list(enumerate([1, 2, 3, 4])))
+#It prints True",2019-11-17T15:26:59+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 2",arcangelo7,"```python
+from collections import deque
+
+
+def stack_from_list(input_list):
+    output_stack = deque()
+
+    for item in input_list:
+        output_stack.append(item)
+
+    return output_stack
+
+
+def test_stack_from_list(input_list, expected):
+    result = stack_from_list(input_list)
+
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+print(test_stack_from_list([1, 2, 3, 4, 5], deque([1, 2, 3, 4, 5])))
+# It prints True
+
+```",2019-11-05T09:06:57+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 2",sntcristian,"![Screenshot (6)](https://user-images.githubusercontent.com/52455931/68217388-cee02a80-ffe2-11e9-86c2-bd9d1aa39606.png)
+",2019-11-05T14:42:05+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 2",FrancescoFernicola,"![Screenshot 2019-11-06 01 06 07](https://user-images.githubusercontent.com/56536141/68256898-bd723f00-0031-11ea-8979-e259739065a8.png)
+",2019-11-06T00:07:09+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 2",noreanystrom,"![image](https://user-images.githubusercontent.com/56627803/68392828-f6fa9580-016a-11ea-9550-e6f2ad6bac18.png)
+
+",2019-11-07T13:29:15+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 2",essepuntato,"Hi all,
+
+please find attached my personal solution – also [available online](https://comp-think.github.io/keys/06/exercise-2):
+
+```
+# Test case for the function
+def test_stack_from_list(input_list, expected):
+    result = stack_from_list(input_list)
+    if expected == result:
+        return True
+    else:
+        return False
+
+# 'stack_from_list' defined in Listing 2.
+
+# Three different test runs
+print(test_stack_from_list([], deque()))
+print(test_stack_from_list([1, 2, 3, 4, 5], deque([1, 2, 3, 4, 5])))
+```
+
+Just a suggestion: when you test your code (any code, not just this exercise), please consider adding some tests which use borderline cases, such as using empty (but admissible) values, such as an empty list in this exercise.",2019-11-08T12:00:37+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 2",arimuti,"![image](https://user-images.githubusercontent.com/56594207/68670688-c8efc980-054d-11ea-909c-401a399b2f18.png)
+The output is: True",2019-11-12T12:10:39+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 2",morinigiu,"<img width=""878"" alt=""Schermata 2019-12-08 alle 16 35 59"" src=""https://user-images.githubusercontent.com/56439205/70391755-e8590580-19d8-11ea-8026-4dd1f06a7494.png"">
+",2019-12-08T15:36:43+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",arcangelo7,"```python
+def linear_search(input_list, value_to_search):
+    for position, item in enumerate(input_list):
+        if item == value_to_search:
+            return position
+
+
+linear_search(list([""Coraline"", ""American Gods"", ""The Graveyard Book"", ""Good Omens"", ""Neverwhere""]), ""The Sandman"")
+
+# FOR-EACH LOOP EXECUTION
+# enumerate([""Coraline"", ""American Gods"", ""The Graveyard Book"", ""Good Omens"", ""Neverwhere""]) will result in:
+# enumerate([(0, ""Coraline""), (1, ""American Gods""), (2, ""The Graveyard Book""), (3, ""Good Omens""), (4, ""Neverwhere"")])
+#
+# Iteration 1
+# position = 0
+# item = ""Coraline""
+# item == value_to_search is False
+# Continue to the next iteration
+#
+# Iteration 2
+# position = 1
+# item = ""American Gods""
+# item == value_to_search is False
+# Continue to the next iteration
+#
+# Iteration 3
+# position = 2
+# item = ""The Graveyard Book""
+# item == value_to_search is False
+# Continue to the next iteration
+#
+# Iteration 4
+# # position = 3
+# # item = ""Good Omens""
+# # item == value_to_search is False
+# # Continue to the next iteration
+#
+# Iteration 5
+# position = 4
+# item = ""Neverwhere""
+# item == value_to_search is False
+#
+# The item was not found. Return None
+```",2019-11-05T08:57:15+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",FrancescaGenovese,"![esercizio python](https://user-images.githubusercontent.com/56439383/68208896-828cee80-ffd2-11e9-9a9e-8ea33b0ebb01.PNG)
+This the solution found by @elisasilvad and me.",2019-11-05T12:46:20+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",sntcristian,"![Screenshot (5)](https://user-images.githubusercontent.com/52455931/68217227-8c1e5280-ffe2-11e9-84db-c1d728fe1240.png)
+",2019-11-05T14:41:41+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",FrancescoFernicola,"![Screenshot 2019-11-06 00 46 08](https://user-images.githubusercontent.com/56536141/68256022-345a0880-002f-11ea-8846-0dc05a9fd0f6.png)
+![Screenshot 2019-11-06 00 46 25](https://user-images.githubusercontent.com/56536141/68256033-39b75300-002f-11ea-8cb9-52748271dd9d.png)
+",2019-11-05T23:50:53+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",aschimmenti,"def linear_search(input_list, value_to_search):
+    for position, item in enumerate(book_list):
+       if item == ""The Sandman""
+          return position
+
+-enumerate([""Coraline"", ""American Gods"", ""The Graveyard Book"", ""Good Omens"", ""Neverwhere""])
+-enumerate([(0, ""Coraline""), (1, ""American Gods""), (2, ""The Graveyard Book""), (3, ""Good Omens""), (4, ""Neverwhere"")])
+-in the first string, for starts the foreach loop while enumerate() creates n tuples from the list (first element of each tuple will be a number, starting from 0; second element will be the title in the list's order, presented as a string).
+-at this point, before returning ""none""/not executing 'return', the algorithm will iterate five times.
+
+-First Iteration
+position = 0, item = ""Coraline""
+item == ""The Sandman"" is False
+unable to return position
+-Second Iteration
+position = 1, item = ""American Gods""
+item == ""The Sandman"" is False
+unable to return position
+-Third Iteration
+position = 2, item = ""The Graveyard Book""
+item == ""The Sandman"" is False
+unable to return position
+-Fourth Iteration
+position = 3, item = ""Good Omens""
+item == ""The Sandman""is False
+unable to return position
+-Fifth Iteration
+position = 4, item = ""Neverwhere""
+item == ""The Sandman"" is False
+unable to return position
+
+-in case we would like a different output, as Arcangelo suggested me, we could add, after return, an else possibility which prints ""Item is not in the list""",2019-11-06T23:45:41+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",noreanystrom,"![image](https://user-images.githubusercontent.com/56627803/68389021-3ffa1c00-0162-11ea-940a-e8ecab5bf7d6.png)
+",2019-11-07T12:22:08+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",essepuntato,"Hi guys,
+
+Thanks for your answers. You can find [my solution online](https://comp-think.github.io/key/06/exercise-1). Just a few notes:
+
+1. I've seen that some of you have changed the input material I've introduced in the exercise, and you have returned the appropriate result in that case. This is fine, of course. However, please, I would ask you to answer explicitly to the exercise first and, then, if you want to experiment another run, do it by changing the input.
+
+2. Remember to explicitly say which value is returned in any case. For instance, if no return statement will be executed by running the function, say explicitly that `None` will be returned.",2019-11-08T11:49:27+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",arimuti,"![image](https://user-images.githubusercontent.com/56594207/68669688-6dbcd780-054b-11ea-9c60-afcfa14193e0.png)
+
+The output is None",2019-11-12T11:53:41+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",morinigiu,"<img width=""844"" alt=""Schermata 2019-12-08 alle 15 53 24"" src=""https://user-images.githubusercontent.com/56439205/70391222-f86de680-19d2-11ea-91a0-98c392205ab2.png"">
+",2019-12-08T14:54:15+00:00
+comp-think/2019-2020,"Lecture ""Brute-force algorithms"", exercise 1",giuliamanganelli,"![Screen Shot 2019-12-08 at 15 54 10](https://user-images.githubusercontent.com/57599228/70391226-04f23f00-19d3-11ea-841d-fb41be46b22f.png)
+",2019-12-08T14:54:38+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 3",essepuntato,"Hi guys,
+
+Here is my solution, that can be run in the [Turing Machine Visualisation Tool](http://turingmachine.io/), if you want to see what happens.
+
+```
+input: '010001'
+blank: '0'
+start state: start
+table:
+  start:
+    0: { write: 1, R: pn }
+  pn:
+    0: { write: 0, R: p0 }
+    1: { write: 0, R: p1 }
+  p0:
+    0: { write: 0, R: p00 }
+    1: { write: 0, R: p01 }
+  p1:
+    0: { write: 0, R: p01 }
+    1: { write: 0, R: p11 }
+  p00:
+    0: { write: 0, L: fail }
+    1: { write: 0, R: p001 }
+  p01:
+    0: { write: 0, R: p001 }
+    1: { write: 0, R: p011 }
+  p11:
+    0: { write: 0, R: p011 }
+    1: { write: 0, L: stop }
+  p001:
+    0: { write: 0, L: fail }
+    1: { write: 0, R: p0011 }
+  p011:
+    0: { write: 0, R: p0011 }
+    1: { write: 0, L: stop }
+  p0011:
+    0: { write: 0, L: fail }
+    1: { write: 0, L: stop }
+  fail:
+    0: { write: 0, L: fail }
+    1: { write: 0, L: stop }
+  stop:
+```",2019-10-28T09:53:21+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",arcangelo7,"```python
+from collections import deque
+
+my_queue = deque([""Draco"", ""Harry"", ""Hermione"", ""Ron"", ""Severus""])
+my_queue.popleft()
+# The queue contains 'Harry', 'Hermione', 'Ron' and 'Severus'. No 'Draco' anymore
+my_queue.append(""Voldemort"")
+# The queue contains 'Harry', 'Hermione', 'Ron', 'Severus' and 'Voldemort'. We have added 'Voldemort'
+my_queue.popleft()
+# The queue contains 'Hermione', 'Ron', 'Severus' and 'Voldemort'. No 'Harry' anymore
+```",2019-10-28T12:53:50+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",Vince2992,"![Ex3](https://user-images.githubusercontent.com/56563522/67697026-2c9fc180-f9a8-11e9-8dfc-69cae53cb9ce.png)
+",2019-10-28T16:27:29+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",ariele-santello,"![Schermata 2019-10-28 alle 18 50 39](https://user-images.githubusercontent.com/56439239/67705494-64623580-f9b7-11e9-8e18-6b9e08a16455.png)
+",2019-10-28T18:16:11+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",noreanystrom,"![image](https://user-images.githubusercontent.com/56627803/67763882-fe25f300-fa48-11e9-8794-f36b98fb13a8.png)
+",2019-10-29T11:38:39+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",elisasilvad,"![Excercise 4 3](https://user-images.githubusercontent.com/56439346/67810952-ecba0680-fa9b-11e9-8eaa-f0f182cd10ab.png)
+",2019-10-29T21:32:15+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",FrancescoFernicola,"![ex3_28_10_2019](https://user-images.githubusercontent.com/56536141/67846465-91bafa80-fb01-11e9-9b97-790f41835575.png)
+",2019-10-30T09:40:04+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",ariannamorettj,"![image](https://user-images.githubusercontent.com/56439207/68053233-bb377a00-fceb-11e9-8837-2bcbc76ae8b3.png)
+",2019-11-01T20:08:34+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",morinigiu,"<img width=""1078"" alt=""Schermata 2019-12-08 alle 15 08 35"" src=""https://user-images.githubusercontent.com/56439205/70390598-ad50d500-19cc-11ea-9b4b-3e7e95963dd5.png"">
+",2019-12-08T14:09:42+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 3",giuliamanganelli,"![Screen Shot 2019-12-08 at 15 08 44](https://user-images.githubusercontent.com/57599228/70390610-c35e9580-19cc-11ea-90bf-46385ecec60b.png)
+",2019-12-08T14:10:00+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",arcangelo7,"```python
+from collections import deque
+
+my_stack = deque([""Draco"", ""Harry"", ""Hermione"", ""Ron"", ""Severus""])
+my_stack.pop()
+# The stack contains 'Draco', 'Harry', 'Hermione' and 'Ron'. No 'Severus' anymore
+my_stack.pop()
+# The stack contains 'Draco', 'Harry' and 'Hermione'. No 'Ron' anymore
+my_stack.append(""Voldemort"")
+# The stack contains 'Draco', 'Harry', 'Hermione' and 'Voldemort'. We have added 'Voldemort'
+```",2019-10-28T12:48:53+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",Vince2992,"![Ex2](https://user-images.githubusercontent.com/56563522/67694025-ff9ce000-f9a2-11e9-8db9-bb906278b371.png)
+",2019-10-28T15:50:21+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",arcangelo7,"_Replying to https://github.com/comp-think/2019-2020/issues/13#issuecomment-547011611 by @Vince2992:_ 
+
+Finding hidden meanings in the exercises: you are doing it well",2019-10-28T16:18:58+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",Vince2992,"All Harry Potter characters have a strange/bad influence on me xD XD and we didn't even mention Dobby, the elf! ahahaha thanks @arcangelo7  :D :D",2019-10-28T17:02:20+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",ariele-santello,"![Schermata 2019-10-28 alle 18 58 31](https://user-images.githubusercontent.com/56439239/67704509-88247c00-f9b5-11e9-95b0-1e3d9902e5a0.png)
+",2019-10-28T18:02:58+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",noreanystrom,"![image](https://user-images.githubusercontent.com/56627803/67724267-cc784200-f9de-11e9-8615-31d21a54fe6c.png)
+",2019-10-28T22:58:16+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",elisasilvad,"![Excercise 4 2](https://user-images.githubusercontent.com/56439346/67810880-c7c59380-fa9b-11e9-9185-2b45e19b0768.png)
+",2019-10-29T21:31:19+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",arimuti,"from **collections** import **deque**
+my_stack = deque([""Draco"", ""Harry"", ""Hermione"", ""Ron"", ""Severus""])
+**my_stack.popleft()**
+print(my_stack)
+output ---> deque(['Harry', 'Hermione', 'Ron', 'Severus']) #it removes the first element on the left
+**my_stack.pop()**
+print(my_stack)
+output ---> deque(['Harry', 'Hermione', 'Ron']) #it removes the first item on the right 
+**my_stack.append(""Voldemort"")**
+print(my_stack)
+output ---> deque(['Harry', 'Hermione', 'Ron', 'Voldemort']) #it adds ""Voldemort"" on the right, as last item
+
+
+p.s.: sorry I mixed up the two assignments 
+",2019-10-29T22:52:53+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",morinigiu,"<img width=""874"" alt=""Schermata 2019-10-30 alle 00 09 33"" src=""https://user-images.githubusercontent.com/56439205/67816246-a53a7700-faa9-11e9-8136-cdd3c75e916d.png"">
+",2019-10-29T23:10:23+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",FrancescoFernicola,"![ex2_28_10_2019](https://user-images.githubusercontent.com/56536141/67846189-135e5880-fb01-11e9-9f01-9f4c4377908b.png)
+
+Although I have to admit, I wish I had @Vince2992 's variable naming skills! Chapeau-- ",2019-10-30T09:38:54+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",ariannamorettj,"![image](https://user-images.githubusercontent.com/56439207/68051644-3c8d0d80-fce8-11e9-8257-eb02da74e8d5.png)
+",2019-11-01T19:43:30+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 2",aschimmenti,"![Pop pop append](https://user-images.githubusercontent.com/56439200/68092963-ffb04a80-fe90-11e9-9ea2-c8f4d2102c4c.PNG)
+
+deque(['Draco', 'Harry', 'Hermione', 'Voldemort'])",2019-11-03T22:24:08+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",a809,"![my_first_list](https://user-images.githubusercontent.com/56438944/67679151-bc357800-f988-11e9-9e74-7cdf523ceab8.jpeg)
+",2019-10-28T12:43:09+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",arcangelo7,"```python
+my_list = [""Harry"", ""Draco"", ""Hermione"", ""Ron"", ""Severus""]
+my_list.sort()
+```",2019-10-28T12:43:44+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",Vince2992,"![Ex1](https://user-images.githubusercontent.com/56563522/67693725-75547c00-f9a2-11e9-80fa-745d72894349.png)
+",2019-10-28T15:47:29+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",noreanystrom,"![image](https://user-images.githubusercontent.com/56627803/67723090-3bec3280-f9db-11e9-874f-95e1707c29ab.png)
+",2019-10-28T22:32:45+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",elisasilvad,"I tried in two different ways
+First
+![Excercise 4 1](https://user-images.githubusercontent.com/56439346/67792233-17df2e80-fa79-11e9-8a16-d40ce2dc94db.png)
+
+Second
+![Excercise 4 1 1](https://user-images.githubusercontent.com/56439346/67792251-1f063c80-fa79-11e9-931b-c5a1cc71de84.png)
+",2019-10-29T17:23:35+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",arimuti,"![image](https://user-images.githubusercontent.com/56594207/67814416-4d4d4180-faa4-11e9-8e18-3e675fabc020.png)
+",2019-10-29T22:32:17+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",morinigiu,"<img width=""947"" alt=""Schermata 2019-10-29 alle 23 48 20"" src=""https://user-images.githubusercontent.com/56439205/67815224-a4ecac80-faa6-11e9-9c88-cb2cec4d34f7.png"">
+",2019-10-29T22:49:18+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",FrancescoFernicola,"![ex1_28_10_2019](https://user-images.githubusercontent.com/56536141/67846065-ddb96f80-fb00-11e9-8dfe-2a6a12744922.png)
+",2019-10-30T09:35:00+00:00
+comp-think/2019-2020,"Lecture ""Organising information: ordered structures"", exercise 1",ariannamorettj,"![image](https://user-images.githubusercontent.com/56439207/68050327-30ec1780-fce5-11e9-8e0c-b65385c43fe8.png)
+",2019-11-01T19:21:55+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",arcangelo7,"
+![Screenshot (6)](https://user-images.githubusercontent.com/42008604/67271910-c7d1fc00-f4bb-11e9-8cdb-f80cace091b0.png)
+
+",2019-10-21T12:48:17+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",Vince2992,"![Ex3](https://user-images.githubusercontent.com/56563522/67229483-ae896b00-f43b-11e9-9bf8-033fe999b36a.png)
+",2019-10-21T17:49:30+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",NoonShin,"```python
+def test_contains_word(first_word, second_word, bib_entry, expected):
+    result = contains_word(first_word, second_word, bib_entry)
+    if result == expected:
+        return True
+    else:
+        return False
+
+
+def contains_word(first_word, second_word, bib_entry):
+    result = 0
+    if first_word in bib_entry:
+        result += 1
+    if second_word in bib_entry:
+        result += 1
+    return result
+    
+
+print(test_contains_word('Shotton', 'Open', 'Shotton, D. (2013). Open Citations. Nature, 502: 295-297. doi:10.1038/502295a', 2))
+print(test_contains_word('Citations', 'Science', 'Shotton, D. (2013). Open Citations. Nature, 502: 295-297. doi:10.1038/502295a', 1))
+print(test_contains_word('References', '1983', 'Shotton, D. (2013). Open Citations. Nature, 502: 295-297. doi:10.1038/502295a', 0))
+```",2019-10-22T16:21:59+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",arimuti,"![image](https://user-images.githubusercontent.com/56594207/67331657-524b4780-f51e-11e9-91bd-c1fb0d24b041.png)
+",2019-10-22T20:50:29+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",FrancescoFernicola,"![Fist Algorithm Alternative](https://user-images.githubusercontent.com/56536141/67552691-db73a180-f70b-11e9-907c-319cc83c2e2c.png)
+",2019-10-25T07:43:33+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",elisasilvad,"
+![Excercise 3 3](https://user-images.githubusercontent.com/56439346/67605183-e6ffb080-f77d-11e9-8892-e054a456feb4.png)
+
+",2019-10-25T21:19:41+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",marcograsso,"![exercise 1](https://user-images.githubusercontent.com/56439271/67638943-7924c780-f8ea-11e9-8243-a402aba4adae.png)
+",2019-10-27T17:51:26+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",sntcristian,"![Screenshot (2)](https://user-images.githubusercontent.com/52455931/67642071-6a4d0d80-f908-11e9-89f5-bf4845e1e324.png)
+
+This algorithm uses the string .count() method instead of the one described in the lectures.",2019-10-27T21:29:48+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",noreanystrom,"![image](https://user-images.githubusercontent.com/56627803/67720222-a6997000-f9d3-11e9-8e73-ed540a77fb29.png)
+",2019-10-28T21:38:29+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",virginiaciambriello,"
+<img width=""1440"" alt=""first_algorithm"" src=""https://user-images.githubusercontent.com/56599567/67884364-0152d900-fb46-11e9-928f-aa8730a7f024.png"">
+
+",2019-10-30T17:50:17+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",essepuntato,"@elisasilvad, your code indeed works. However, it is not the direct translation of the flowchart in figure 4 indicated in the text of the exercise since the flowchart does not explicitly tell you to initialise the `contains_first_word` and `contains_second_word` variables as you did in your Python code.",2019-11-02T16:37:26+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",giuliamanganelli,"![esercizio](https://user-images.githubusercontent.com/57599228/70389435-817b2280-19bf-11ea-98aa-3773f4c278f5.png)
+",2019-12-08T12:34:58+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 3",morinigiu,"<img width=""911"" alt=""Schermata 2019-12-08 alle 13 35 34"" src=""https://user-images.githubusercontent.com/56439205/70389453-c30bcd80-19bf-11ea-9c21-a038346c3c5c.png"">
+",2019-12-08T12:36:43+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 2",ereuhl,"````
+""spam"" not in ""spa span sparql"" and not (""egg"" > ""span"")
+         True                  and not (""egg"" > ""span"")
+         True                  and not (    False     )
+         True                  and     True
+                         True
+````",2019-10-21T09:11:15+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 2",Vince2992,"![Ex2](https://user-images.githubusercontent.com/56563522/67228667-12129900-f43a-11e9-88c2-c19ea2a27501.png)
+",2019-10-21T17:37:36+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 2",arimuti,"![image](https://user-images.githubusercontent.com/56594207/67309194-b7417600-f4fb-11e9-9251-adaf9d4776b6.png)
+",2019-10-22T16:42:39+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 2",FrancescoFernicola,"""spam"" not in ""spa span sparaql"" and not (""egg"" > ""span"")=
+=""spam"" not in ""spa span sparaql"" and not  (False)=
+=""spam"" not in ""spa span sparaql"" and True=
+=True and True=
+=True",2019-10-24T20:42:40+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 2",virginiaciambriello,"""spam"" not in ""spa span sparql"" and not (""egg > ""span"")
+True and not (False)
+True and True 
+True  ",2019-10-30T16:41:21+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 2",essepuntato,"@arimuti, it is not clear the various values that are assumed by the expressions at each passage. Could you please be more explicit?",2019-11-02T16:29:20+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 2",morinigiu,"""spam"" not in ""spa span sparql"" and not (""egg"" > ""span"")
+
+True and not False
+
+True and True
+
+True",2019-12-08T11:56:11+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 2",giuliamanganelli,"""spam"" not in ""spa span sparql"" and not (""egg"" > ""span"")
+
+True and not False
+
+True and True
+
+True",2019-12-08T11:56:16+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 1",ereuhl,"Since the order in which the operators have to be evaluated is first NOT, then AND, then OR and what is inside the bracket has to be evaluated first, this is my result:
+
+````
+not (not True or False and True) or False
+not ( False   or False and True) or False
+not ( False   or      False    ) or False
+not          False               or False
+      True                       or False
+                   True
+````",2019-10-21T08:51:45+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 1",Vince2992,"![Ex1](https://user-images.githubusercontent.com/56563522/67223679-01f5bc00-f430-11e9-8b0c-bc5be549a0ee.png)
+",2019-10-21T16:25:10+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 1",arimuti,"![image](https://user-images.githubusercontent.com/56594207/67308756-f58a6580-f4fa-11e9-8c60-226b86c147bf.png)
+",2019-10-22T16:37:26+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 1",FrancescoFernicola,"not (not True or False and True) or False=
+=not (False or False and True) or False=
+=not (False or False) or False=
+=not (False) or False=
+=True or False= 
+=True",2019-10-24T20:38:19+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 1",virginiaciambriello,"not (not True or False and True) or False
+not (False or False and True) or False 
+not (False or False) or False 
+not False or False 
+True or False 
+True",2019-10-30T16:24:52+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 1",morinigiu,"not (not True or False and True) or False
+
+not (False or False and True) or False
+
+not (False or False) or False
+
+not False or False
+
+True or False
+
+True",2019-12-08T11:50:51+00:00
+comp-think/2019-2020,"Lecture ""Programming languages"", exercise 1",giuliamanganelli,"not (not True or False and True) or False
+
+not (False or False and True) or False
+
+not (False or False) or False
+
+not False or False
+
+True or False
+
+True ",2019-12-08T11:51:38+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 2",sntcristian,"A:
+0 or 1: {- R B}
+B:
+0 or 1: {- R C}
+C:
+0 or 1: {- R D}
+D:
+0 or 1: {- R E}
+E:
+0 or 1: {- R F}
+F:
+0: {- L I}
+1: {- L G}
+G:
+0:{- L N}
+1:{- L H }
+H:
+1:{- L Z}
+0:{- L X}
+I: 
+0:{- L N}
+1:{- L L}
+L:
+0:{- L X}
+1:{- L M}
+M:
+0:{- L U}
+1:{- L V}
+N:
+0: {- L X}
+1: {- L O}
+O: 
+0:{- L U}
+1:{- L P}
+P:
+0:{- L W}
+1:{- L Y}
+Z: 
+0 or 1:{- L V}
+X:
+0 or 1:{- L U }
+V:
+0 or 1:{- L Y }
+U:
+0 or 1:{- L W}
+Y:
+0 or 1:{1 - T}
+W:
+0 or 1:{0 - T}
+T:",2019-10-20T09:27:49+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 2",ariannamorettj,"Consider an algorithm that takes as input a 0-1 sequence of exactly five symbols, and returns a 1 if the sequence contains at least three consecutive 1s, and returns a 0 otherwise. Implement the algorithm with a Turing machine, where the cell correspondent to the starting position of the head is where the final result must be stored. Also, the five cells following the starting position of the head are initialised with the 0-1 sequence of five symbols used as input of the algorithm.
+
+
+**Possible Outputs**:
+1-->  if there is inside a series of at least 3 consecutive 1s
+0 --> otherwise
+**Blank**: 0
+**Input**: series of five symbols 0 or 1
+**Start**: in the cell at the immediate left of the first cell of the five containing the input. 
+
+
+
+Current state | Tape symbol | Write symbol | Move head | Next state
+-- | -- | -- | -- | --
+A | 0 or 1 | 0 | Right | B
+B | 1 | / | Right | C
+  | 0 | / | Right | D
+C | 1 | / | Right | E
+  | 0 | / | Right | F
+D | 1 | / | Right | G
+  | 0 | / | Right | F
+E | 1 | / | Left | H
+  | 0 | / | Left | N
+F | 1 | / | right | Q
+  | 0 | / | Left | N
+G | 1 | / | Right | R
+  | 0 | / | Left | N
+H | 1 | / | Left | I
+  | 0 | / | Left | I
+I | 0 | / | Left | L
+  | 1 | / | Left | L
+L | 0/1 | 1 | Left | M
+M |   |   |   |  
+N | 0/1 | / | Left | O
+O | 0/1 | / | Left | P
+P | 0/1 | 0 | Left | M
+Q | 1 | / | Right | T
+  | 0 | / | Left | S
+S | 0/1 | / | Left | N
+R | 1 | / | Left | U
+  | 0 | / | Left | S
+T | 1 | / | Left | V
+  | 0 | / | Left | W
+U | 1/0 | / | Left | H
+V | 1/0 | / | Left | U
+W | 1/0 | / | Left | S
+
+Before writing the table, I had drawn a map assuming that, since (2^5) - 8 = 24 (over 32) combinations of 0s and 1s  lead to store 0 as output in the first cell at the left of the input series, maybe it could be useful to set ""0"" as default value in this first cell, so that only in the 8 cases (	11111/ 11110 / 11100 / 01110 / 01111 / 00111 / 10111 / 11101) in which the output is 1 the machine would have come back to that position to change the symbol from 0 to 1. Anyway, I was quite sceptical about this process, so I tried in another way (which is the final one I wrote in the table).
+
+![Catturam](https://user-images.githubusercontent.com/56439207/67163787-6a329800-f373-11e9-9f05-469e70ad6e35.PNG)
+
+",2019-10-20T17:59:34+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 2",NoonShin,"*The following solution is provided assuming that empty cells exist in the alphabet and that all the cells, excepting the first 6 (first head position and the following input values), are empty.*
+
+![Turing](https://user-images.githubusercontent.com/13397550/67165456-5728c380-f385-11e9-8718-deddddc5489d.png)
+",2019-10-20T20:07:58+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 2",FrancescoFernicola,"For some reason turingmachine.io displays a ""Syntax Error: duplicated mapping key"" message so I can't play out the algorithm but I can't really find the error. It should still work though. 
+
+blank: '0'
+start state: A
+table:
+  
+  A:
+     [0,1]: {write: 0, R: B}
+  
+  B:
+     '0': {write: 0, R: C}
+     '1': {write: 1, R: C}
+
+  C:
+    '0': {write: 0, R: D}
+    '1': {write: 1, R: D}
+  
+  D:
+    '0': {write: 0, R: E}
+    '1': {write: 1, R: E}
+   
+  E:
+    '0': {write: 0, R: F}
+    '1': {write: 1, R: F}
+    
+  F:
+    '0': {write: 0, L: I}
+    '1': {write: 1, L: G}
+  
+  G: 
+    '0': {write: 0, L: N}
+    '1': {write: 1, L: H}
+  
+  H:
+    '0': {write: 0, L: Q}
+    '1': {write: 1, L: J}
+  
+ 
+  I:
+    '0': {write: 0, L: N}
+    '1': {write: 1, L: L}	
+	
+  J:
+    '0': {write: 0, L: K}
+    '1': {write: 1, L: K}
+  
+  K: 
+    '0': {write: 0, L: S}
+    '1': {write: 1, L: S}
+	 
+  L:
+    '0': {write: 0, L: Q}
+    '1': {write: 1, L: M}
+	 
+  M:  
+    '0': {write: 0, L: R}
+    '1': {write: 1, L: K}
+   
+  N:
+    '0': {write: 0, L: Q}
+    '1': {write: 1, L: O}
+
+  O:
+    '0': {write: 0, L: R}
+    '1': {write: 1, L: P}
+
+  P: 
+    '0': {write: 0, L: T}
+    '1': {write: 1, L: S}
+  
+  
+  Q:   
+    '0': {write: 0, L: R}
+    '1': {write: 1, L: R}
+  
+  R:    
+    '0': {write: 0, L: T}
+    '1': {write: 1, L: T}
+  
+  S:
+    [0,1]: {write: 1, L: done}
+   
+  T:
+    [0,1]: {write: 0, L: done}
+   
+  done:  ",2019-10-20T23:11:17+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 2",arcangelo7,"I've simply understood Nooshin solution and translated it into a table of instruction and a Turing Machine Visualization. You can find the code to try yourself here: https://gist.github.com/arcangelo7/0f7d37ce1de650818e46566a560796ab. 
+
+![issue2](https://user-images.githubusercontent.com/42008604/67276144-58acd580-f4c4-11e9-8867-bba73d91601c.gif)
+
+![issue2](https://user-images.githubusercontent.com/42008604/67276156-5e0a2000-f4c4-11e9-95d8-5087d030eafa.jpg)
+
+",2019-10-22T10:06:29+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 2",noreanystrom,"After a lot of thinking I came up with below solution. 
+(The numbers on the left side of the chart is my mental process, the potential incoming sequence > new sequence)
+![Skärmavbild 2019-10-23 kl  19 01 25](https://user-images.githubusercontent.com/56627803/67416687-8dee1c00-f5c7-11e9-8560-bd75adb0222e.png)
+",2019-10-23T17:00:36+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 2",essepuntato,"Hi guys,
+
+Here is my solution, that can be run in the [Turing Machine Visualisation Tool](http://turingmachine.io/), if you want to see what happens.
+
+```
+input: '010111'
+blank: '0'
+start state: start
+table:
+  start:
+    0: { write: 1, R: pn }
+  pn:
+    0: { write: 0, R: p0 }
+    1: { write: 0, R: p1 }
+  p0:
+    0: { write: 0, R: p00 }
+    1: { write: 0, R: p01 }
+  p1:
+    0: { write: 0, R: p00 }
+    1: { write: 0, R: p11 }
+  p00:
+    0: { write: 0, L: fail }
+    1: { write: 0, R: p001 }
+  p01:
+    0: { write: 0, L: fail }
+    1: { write: 0, R: p011 }
+  p11:
+    0: { write: 0, L: fail }
+    1: { write: 0, L: stop }
+  p001:
+    0: { write: 0, L: fail }
+    1: { write: 0, R: p0011 }
+  p011:
+    0: { write: 0, L: fail }
+    1: { write: 0, L: stop }
+  p0011:
+    0: { write: 0, L: fail }
+    1: { write: 0, L: stop }
+  fail:
+    0: { write: 0, L: fail }
+    1: { write: 0, L: stop }
+  stop:
+```
+
+The structure of the solution I've proposed is as follows: to count how many 1s have been processed in a row and, in case this number is lesser than 3, then move the head back to the first cell to write 0, otherwise, it will leave the 1 set in the very first operation of the Machine.
+
+The last thing: @FrancescoFernicola the problem with the syntax error is related to some wrong indent.
+
+**PS:** The solution to this exercise I've proposed initially has been just fixed (on October 28, 2019) to be compliant with the text fo the exercise that asks to have a sequence of three consecutive 1s to return 1. In fact, the solution proposed before returned 1 if the input sequence contains three 1s independently from the order they appear in the sequence. This latter exercise/solution is now available in a [new issue](15), that will be also added to lecture notes online. Apologies for the inconvenience.",2019-10-25T16:19:16+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 1",FrancescoFernicola,"[Issue 1 Turing.xlsx](https://github.com/comp-think/2019-2020/files/3745630/Issue.1.Turing.xlsx)
+
+I've also implemented it in the Turing Machine Visualization tool as follows:
+
+input: '0'
+blank: '0'
+start state: A
+table:
+    A:
+        [0,1]: { write: 1, R: C }
+  
+  B:
+        [0 ,1]: { write: 1, L: A }
+   
+  C:
+        '0': { write: 1, L: B }
+        '1': { write: 0, L: D }
+    
+  D:
+",2019-10-18T21:00:31+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 1",elisasilvad,"![Excercise 3 1](https://user-images.githubusercontent.com/56439346/67143168-b93fd680-f268-11e9-8a3f-2fa7f59159f8.jpg)
+
+",2019-10-19T10:06:20+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 1",arcangelo7,"
+![issue1](https://user-images.githubusercontent.com/42008604/67145694-a71f6180-f283-11e9-83ec-99cfd9080268.gif)
+
+blank: '0'
+start state: A
+table:
+  A:
+    0: { write: 1, R: B }
+    1: { write: 0, L: C }
+  B:
+    0: { write: 1, L: A }
+  C:
+    0: { write: 1, R: D}
+  D:
+
+![issue1](https://user-images.githubusercontent.com/42008604/67145506-578c6600-f282-11e9-84fb-049c40dc0ba5.jpg)
+
+
+
+
+",2019-10-19T13:08:10+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 1",NoonShin,"Current State | Tape Symbol | Write Symbol | Move Head | Next State
+--- | --- | --- | --- | ---
+A | 0 | 1 | Right | B
+A | 1 | 0 | Left | C
+B | 0 or 1 | 1 | Left | A
+C | 0 or 1 | 1 | Right | D",2019-10-19T14:30:15+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 1",ariannamorettj,"The first table was my first attempt. I'm not sure about the actual possibility to set the starting position of the head in a cell containing the only ""1"" symbol, by setting it as input among all the other cells containing the blank symbol ""0"". Anyway, the second version seems more logical and natural.
+
+![es1turing](https://user-images.githubusercontent.com/56439207/67147152-890d2d80-f292-11e9-82df-259e5383e4ad.PNG)
+",2019-10-19T15:18:36+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 1",noreanystrom,"The first solution is very simple and definitely the most efficient one. Although I am not sure the algorithm is suitable for a Turing Machine. The sequence is in a straight line and there is only one directive for every state. Gave it a second try and came up with solution 2
+
+![Skärmavbild 2019-10-19 kl  21 59 28](https://user-images.githubusercontent.com/56627803/67150856-617f8a80-f2bd-11e9-873a-d5095c5bdece.png)
+",2019-10-19T20:11:24+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 1",arimuti,"![image](https://user-images.githubusercontent.com/56594207/67191058-4a41b980-f3f1-11e9-8a78-26938f03e73f.png)
+",2019-10-21T08:55:34+00:00
+comp-think/2019-2020,"Lecture ""Computability"", exercise 1",essepuntato,"Hi guys,
+
+Here is my solution, that can be run in the [Turing Machine Visualisation Tool](http://turingmachine.io/), if you want to see what happens.
+
+```
+blank: '0'
+start state: A
+table:
+  A:
+    0: { write: 1, R: B }
+    1: { write: 0, L: C }
+  B:
+    0: { write: 1, L: A }
+  C:
+    0: { write: 1, L: D }
+  D:
+```
+
+Just a couple of things:
+
+1. @arimuti you have specified two rows (row 1 and 3) having the same state and type symbol, but with different next states. In this case, it is impossible to a Turing Machine to understand if rule 1 or rule 3 should be applied according to what is read by the head.
+2. @noreanystrom I would suggest you to try to convert your table of instructions in the format of the Turing Machine Visualisation Tool so as to see it in action since it seems to be there are some issues in the instructions proposed. In particular, remember that the two 1s of the output should be placed just before and after the cell pointed by the head at the very beginning.",2019-10-25T16:13:10+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",arcangelo7,"This is the representation of the first Fibonacci algorithm, that which says: 
+
+> The function for calculating the nth Fibonacci number takes as input
+an integer “n”. If “n” is less than or equal to 0, then 0 is returned
+as a result. Otherwise, if “n” is less than or equal to 2, then 1 is
+returned. Otherwise, in all the other cases, associate the value “1”
+to two distinct variables “a” and “b”. Then, repeat the following
+operations indefinitely. Set the variable “c” as the sum of “a” plus
+“b”. If “n” is less than or equal to “3” then return “c”, otherwise
+assign the value of “b” to “a” and the value of “c” to “b”, and
+finally decrease the value of “n” by 1 before repeating.
+
+![Esercizio3-1](https://user-images.githubusercontent.com/42008604/66921618-e3558680-f025-11e9-95b0-13543bc0eb1c.jpg)
+
+
+
+
+
+",2019-10-16T11:08:46+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",arcangelo7,"This is the representation of the second Fibonacci algorithm, that which says:
+
+> The function for calculating the nth Fibonacci number takes as input
+an integer “n”. If “n” is less than or equal to 0, then 0 is returned
+as a result. Otherwise, if “n” is equal to 1, then 1 is returned.
+Otherwise, return the sum of the same function with “n-1” as input
+and still the same function with “n-2” as input.
+
+![Esercizio3-2](https://user-images.githubusercontent.com/42008604/66924412-e3a45080-f02a-11e9-91b2-c7b3af7afc87.jpg)
+
+
+",2019-10-16T11:48:30+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",FrancescoFernicola,"Representation of the first algorithm
+![Exercise 3 Algorithm 1](https://user-images.githubusercontent.com/56536141/66920311-501b5180-f023-11e9-8a39-95850e8c2434.png)
+",2019-10-16T12:44:45+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",marcograsso,"## Algorithm1 - flowchart
+![exflowfib](https://user-images.githubusercontent.com/56439271/66925609-f61f8980-f02c-11e9-811d-4d5b40be5f2f.jpg)
+## Algorithm2 - flowchart
+![fibo2floc](https://user-images.githubusercontent.com/56439271/66927829-ca060780-f030-11e9-85b2-be1103a1e79c.jpg)
+
+
+",2019-10-16T14:04:59+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",ariannamorettj,"First Fibonacci algorithm representation (Flowchart)
+![flow3](https://user-images.githubusercontent.com/56439207/66952194-6f82a080-f05c-11e9-8e84-93563659b687.PNG)
+
+Second Fibonacci algorithm representation (Flowchart)
+![flow4](https://user-images.githubusercontent.com/56439207/66963797-e166e400-f074-11e9-883b-ee0e9027f422.PNG)
+",2019-10-16T19:33:43+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",noreanystrom,"![Task 3 Algorithms](https://user-images.githubusercontent.com/56627803/66958471-84653100-f068-11e9-94ca-d35886f5e144.png)
+![Task 3_2 Algorithms](https://user-images.githubusercontent.com/56627803/66958477-88914e80-f068-11e9-8ae2-b5e1aa78803b.png)
+",2019-10-16T20:58:59+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",ariele-santello,"Representation of the first Fibonacci algorithm
+![Untitled Diagram](https://user-images.githubusercontent.com/56439239/66994736-0a679300-f0ce-11e9-8ca9-19c13c01a0fd.png)
+",2019-10-17T09:05:44+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",ariele-santello,"Representation of the second Fibonacci algorithm
+![second Diagram](https://user-images.githubusercontent.com/56439239/66996410-f6716080-f0d0-11e9-9441-5f0c1db28c97.png)
+",2019-10-17T09:26:33+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",Prope95,"Flowchart of the first Fibonacci sequence algorithm
+
+![Fibonacci's serie algorithm](https://user-images.githubusercontent.com/56650369/67031662-4886a600-f112-11e9-9c12-4fe90672b9ce.PNG)
+",2019-10-17T17:14:12+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",elisasilvad,"1st definition 
+![Excercise 2 3 1](https://user-images.githubusercontent.com/56439346/67027828-8f709d80-f10a-11e9-80c9-b23c00f21532.jpg)
+
+2nd definition 
+![Excercise 2 3 2](https://user-images.githubusercontent.com/56439346/67027848-9697ab80-f10a-11e9-8f89-a8c0c782cce7.jpg)
+ But I have a doubt with the second one
+",2019-10-17T20:18:25+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",sntcristian,"First representation: https://drive.google.com/file/d/16IG8o-BR04ahLcUuwFQuKY-g5KTzY043/view?usp=drivesdk
+Second representation: https://drive.google.com/file/d/16F-4gBz5ySjHuTkxBqxpzLvLLzkSlVxR/view?usp=drivesdk",2019-10-17T20:19:17+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",a809,"First
+![Fibo 1](https://user-images.githubusercontent.com/56438944/67045803-4848d380-f12f-11e9-97d3-69708e92b409.jpg)
+",2019-10-17T20:42:26+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",a809,"Second
+![FIBO 2](https://user-images.githubusercontent.com/56438944/67045896-78907200-f12f-11e9-8127-0425929be84c.jpg)
+",2019-10-17T20:43:20+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",aschimmenti,"[Fibonacci function, following the first natural language definition.](https://drive.google.com/open?id=1oMOX0dD5IcRq-dC3agpxS-hYmYyKxfPL)
+[Fibonacci function, following the second natural language definition.](https://drive.google.com/open?id=1RgVfixLTVtYajBbrO-oPXPtomkwLF-43)",2019-10-17T22:41:37+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",arimuti,"https://github.com/comp-think/2019-2020/files/3742906/Untitled.Diagram.pdf
+The function for calculating the n th Fibonacci number takes as input an integer “n”. If “n” is less than or equal to 0, then 0 is returned as a result. Otherwise, if “n” is less than or equal to 2, then 1 is returned. Otherwise, in all the other cases, associate the value “1” to two distinct variables “a” and “b”. Then, repeat the following operations indefinitely. Set the variable “c” as the sum of “a” plus “b”. If “n” is less than or equal to “3” then return “c”, otherwise assign the value of “b” to “a” and the value of “c” to “b”, and finally decrease the value of “n” by 1 before repeating.
+",2019-10-18T08:13:06+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",arimuti,"https://github.com/comp-think/2019-2020/files/3743011/Fib2.pdf 
+
+The function for calculating the n th Fibonacci number takes as input an integer “n”. If “n” is less than or equal to 0, then 0 is returned as a result. Otherwise, if “n” is equal to 1, then 1 is returned. Otherwise, return the sum of the same function with “n-1” as input and still the same function with “n-2” as input.
+
+I'm not sure my flowchart is right because I did not define the F function at the beginning",2019-10-18T08:47:28+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 3",essepuntato,"Hi all,
+
+First of all, thanks for your incredible work. A few suggestions here – I will recall then in the lecture in a few minutes:
+
+1. Once developed the flowchart, it is important to test it so as to see if it will return some unexpected values on some input. Please, try to run all the flowchart you have proposed with the following input numbers: 0, 1, 3, 7. See if all the flowcharts return the right output value for each of the inputs.
+
+2. If you need to use again the algorithm itself in the second diagram, then associated a label to the algorithm or use a clear sentence that clarifies what is happening (e.g. ""executing this algorithm using n-1 as input"").",2019-10-21T07:35:49+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",noreanystrom,https://drive.google.com/file/d/14FnB9pqchaRwP3XFt9MwWcn6-v6Wyvo5/view?usp=sharing,2019-10-16T10:45:51+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",arcangelo7,"![esercizio2](https://user-images.githubusercontent.com/42008604/66912602-2f4b0000-f013-11e9-990e-25926a928169.jpg)
+",2019-10-16T10:48:15+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",FrancescoFernicola,"![Exercise 2 (1)](https://user-images.githubusercontent.com/56536141/66920133-02064e00-f023-11e9-8e4d-4a7eacc9603e.png)
+",2019-10-16T12:41:37+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",marcograsso,"![flowchart exercise](https://user-images.githubusercontent.com/56439271/66920456-9cff2800-f023-11e9-8dc2-8a26f9831f54.jpg)
+",2019-10-16T12:45:54+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",Gemmacentr,"![Untitled Diagram (2)](https://user-images.githubusercontent.com/56439561/66932485-fa9d6f80-f037-11e9-8b82-75942ccbdf02.jpg)
+",2019-10-16T15:11:28+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",ariannamorettj,"
+![flow2](https://user-images.githubusercontent.com/56439207/66953081-19aef800-f05e-11e9-9a51-0201f4f1af54.PNG)
+",2019-10-16T19:44:46+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",ariele-santello,"[Untitled Diagram.pdf](https://github.com/comp-think/2019-2020/files/3738176/Untitled.Diagram.pdf)
+",2019-10-17T08:29:22+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",elisasilvad,"![Exercise 2 2 diagram](https://user-images.githubusercontent.com/56439346/67007230-37746f80-f0e7-11e9-87ff-d06530745c7e.jpg)
+",2019-10-17T12:06:09+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",a809,"![exercise 2 jpeg](https://user-images.githubusercontent.com/56438944/67015591-08fe9080-f0f7-11e9-9208-a1352cb6e262.jpg)
+",2019-10-17T13:59:58+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",virginiaciambriello,"[Algorithms, ex.2 issue 5.pdf] (https://github.com/comp-think/2019-2020/files/3741075/Algorithms.ex.2.issue.5.pdf)
+",2019-10-17T19:51:42+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",sntcristian,https://drive.google.com/file/d/16JYsMgIt3KFt0KuVAAJZzfTqpsTJcnR7/view?usp=drivesdk,2019-10-17T19:54:17+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",aschimmenti,"[Basic sameness algorithm, Andrea Schimmenti](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Untitled%20Diagram.drawio#R5Vlbc6IwFP41Pm6HEPDyWLW3md3ZznQ7bR%2BjpJCdQGyIVfvrN5EgkGClLtqt%2B%2BKQL8khOd%2B5YgeO4uUVR7PoBwsw7bhOsOzAccd1e8CVvwpYZQDswgwIOQkyCBTAHXnDGnQ0OicBTisLBWNUkFkVnLIkwVNRwRDnbFFd9sxo9a0zFGILuJsiaqMPJBBRhvp9WODXmISRfnPf7WUTMcrX6oukEQrYogTBiw4cccZE9hQvR5gq1eVqyfZdbpndnIvjRDTZcAOuruNhdHW7fPj%2B5rw490%2F3w29ayiuic33fVCAu9InFKtcCZ%2FMkwEoS6MDhIiIC383QVM0uJO0Si0RM9bSWibnAy62HBRsVSMvBLMaCr%2BQSvSFXmjaagR4uCgZyKCop39MY0pyHG7mFXuSDVs0H1AQtNVkawklwrsxNjqYUpSmZ1ikFB5a17VRJ6dJ%2BzaVzjGOKBHmtiq%2FThH7DLSPyxRuNd70zv6JzAA1tpmzOp1hvKxuaKcmQMzDkSAMLsbDkrInZXHt%2FrrwarrooVjaaTNLZmgp5ou7LXHne8OfktwobrgMKzN7QpQqfcPkU6hXmfve9%2FYaxyFgwU4%2BSfUQppizkKJYLZ5gTeX%2FMzbnbYuIY3reFwZIl9o%2Fpfv7pu9%2BgqnLXGeTu%2BFH3A7tFHdgDu7vp4hGLJ%2FP0KNZsKgTkubvEbK%2BOWX87iX9lzr2GEWo%2F6CZtEN8cEWHFCIpxdsPaLeWQBi93RjVJkWifPVAtBVxoB6PaYsBMX63R1z%2F9aLRRnukyHw1GliD3uMVAbjwlslaym9htuRyn5A1N1gsclZnVCddn9ocdfywRNBcszdoVtQFREibymeJnJUrZPJFdxLmGBVMuk8o4R5LwlxqMZaXSTrYGRnxzbA%2BBNbZiUtGagwC7qzg9D%2FEMwwZ7VsvQZM8UdGgPceuykY76a18pssbXqmJNzdZUsXVp%2F2BVLPgPukiz%2BZPBaN86FnqmKOM0h3aM2kZS%2B0LCvq5feP4%2F1t6BFvo7eXe%2BetTJej14UoMz2crq8XhZnh2v8tGSiMdciHzOtvl6VGxSg3xPUy%2BUN1gbe4Pwmxnzewv7n%2BnXsG%2Bmuz292rPSXbPeVJKPVqVluh47hN83aF%2B%2Fepj2zJbY%2FEbXmE5TkH%2Fk6sVuxiQ3Fl%2FH%2Fnzt%2BYa71JTkR%2F2ADQaWnlQKO6U2yKoXnE3p8VmNkGt3n60ltl15rXmO2p16vE9NPe2VlGbl015JKYfFP3nZ8uLfUHjxBw%3D%3D)",2019-10-17T20:43:47+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",essepuntato,"Hi all,
+
+Thanks for the solution proposed. Looking at your diagrams, I've seen a bunch of mistakes that should be better to address as soon as possible. Following a random order:
+
+1. When you have to return something using the input/output widget, you have to explicitly write that you are returning (e.g. writing *return ""yes""* instead of just *""yes""*). This is important since the widget can be used either for input or for output and it is impossible to disambiguate the intended usage without a text that clarifies it. In fact, even if we will specify the input only at the very beginning of the algorithm, there may exist some situation (that we do not analyse in our course) where a user is required to provide different inputs in different position of the algorithm. Thus, please specify every time if you are using the input/output widget as input or as output.
+
+2. Please read carefully the natural language description of the algorithm and, in particular, identify the input and output. Some of you have returned a number instead of a string. In the past years, I've seen projects failing just for having not respected the particular output that an algorithm should return.",2019-10-21T07:25:58+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 2",morinigiu,"<img width=""807"" alt=""Schermata 2019-10-29 alle 23 37 14"" src=""https://user-images.githubusercontent.com/56439205/67814732-22172200-faa5-11e9-83ed-bc9a54c4fcb6.png"">
+",2019-10-29T22:38:10+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",arcangelo7,The result is 2.,2019-10-16T09:33:23+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",noreanystrom,Result = 2,2019-10-16T10:29:57+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",FrancescoFernicola,"The result is 2
+",2019-10-16T12:37:29+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",ghost,2!,2019-10-16T14:47:11+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",ariannamorettj,"Result = 2 
+![flow1](https://user-images.githubusercontent.com/56439207/66953199-511da480-f05e-11e9-8fa8-cb692d5b612c.PNG)
+",2019-10-16T19:46:03+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",virginiaciambriello,The result is 2,2019-10-17T19:13:29+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",sntcristian,Result is 2,2019-10-17T19:48:22+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",essepuntato,"@ariannamorettj 
+
+Your approach works, but it is unclear the use you have done of the diagram since in the input widget you actually specified the actual input used for the particular execution of the algorithm. Now, of course, you can use a flowchart to mimic the execution of the algorithm, but in this case, I would strongly suggest drawing only the widgets that are really used. For instance, I would avoid drawing the line ""no"" between the first decision widget and the second, as well as the line ""no"" of the second decision widget. In this way, you have a linear execution of all the passages, that avoid possible confusion.
+
+I hope it may help.",2019-10-21T07:17:22+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",morinigiu,"@essepuntato I tried to take Arianna's flowchart and add your corrections, could it be the right representation?
+
+<img width=""936"" alt=""Schermata 2019-10-29 alle 21 02 25"" src=""https://user-images.githubusercontent.com/56439205/67813960-23474f80-faa3-11e9-9eab-83427d7faa5b.png"">
+
+",2019-10-29T22:24:20+00:00
+comp-think/2019-2020,"Lecture ""Algorithms"", exercise 1",ariannamorettj,"Thank you very much, it helps a lot.
+So, just to be sure, the point is that it is advisable to:
+
+  *   avoid simulating the real implementation of the algorithm using explicitly the input/output material in the widgets
+  *   avoid implementing the parts of the flowchart corresponding to the possiblities not implied by the effective development of the algorithm itself, considering the given inputs.
+
+Does it sound right?
+Thank you again.
+
+________________________________
+Da: Silvio Peroni <notifications@github.com>
+Inviato: lunedì 21 ottobre 2019 09:17
+A: comp-think/2019-2020 <2019-2020@noreply.github.com>
+Cc: Arianna Moretti - arianna.moretti2@studio.unibo.it <arianna.moretti2@studio.unibo.it>; Mention <mention@noreply.github.com>
+Oggetto: Re: [comp-think/2019-2020] Lecture ""Algorithms"", exercise 1 (#4)
+
+
+@ariannamorettj<https://github.com/ariannamorettj>
+
+Your approach works, but it is unclear the use you have done of the diagram since in the input widget you actually specified the actual input used for the particular execution of the algorithm. Now, of course, you can use a flowchart to mimic the execution of the algorithm, but in this case, I would strongly suggest drawing only the widgets that are really used. For instance, I would avoid drawing the line ""no"" between the first decision widget and the second, as well as the line ""no"" of the second decision widget. In this way, you have a linear execution of all the passages, that avoid possible confusion.
+
+I hope it may help.
+
+—
+You are receiving this because you were mentioned.
+Reply to this email directly, view it on GitHub<https://github.com/comp-think/2019-2020/issues/4?email_source=notifications&email_token=ANOTDJ24GQ2QEKJNTSJVVOLQPVJQLA5CNFSM4JBGGBUKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOEBZJ2XA#issuecomment-544382300>, or unsubscribe<https://github.com/notifications/unsubscribe-auth/ANOTDJ7CKFFFCGQB3XZIAHTQPVJQLANCNFSM4JBGGBUA>.
+",2019-10-30T07:47:59+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",NoonShin,"A zebra and a giraffe are both mammals, and in a broader abstraction, animals. However different they might be in many details, there are essential qualities that they have in common with each other and other mammals/animals (similar organs, body hair, reproductive systems, etc.).",2019-10-14T11:39:51+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",arcangelo7,"An electrified mosquito racket and a tennis racket are both equipped with frames, handles and a net of strings.",2019-10-14T16:29:40+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",ariele-santello,A tire and a donut. They are both round and with a hole in the middle.,2019-10-15T12:44:13+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",morinigiu,"A ring and a key ring: they are round, thin, with a hole in the middle and can be made of the same material",2019-10-15T12:57:44+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",aschimmenti,Neurons and dendrites have the same growth pattern of trees and branches ,2019-10-15T13:32:47+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",arimuti,"A big shopping mall and Amazon are both places (virtual or physical) that you visit when you want to take a look at products or when you want to buy them, in both places you can choose from a huge variety of products, both have a warehouse and in both cases, the majority of the products sold are the same everywhere in the world. ",2019-10-15T13:51:44+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",ghost,Morse code and a letter are both forms of communication.,2019-10-15T14:44:33+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",elisasilvad,A mountain and a stair: in both cases you can climb or go down,2019-10-15T16:10:12+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",a809,Walking and taking a bus are both forms of movement. In both cases the subject changes his position in space from a point A to a point B.,2019-10-15T17:45:43+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",virginiaciambriello,A person talking to a friend and a teacher talking to her students. Situations are different but the act of talking is common.,2019-10-15T19:04:24+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",FrancescoFernicola,A physicist solving complex equations on the chalkboard and an interpreter sketching symbols while Trump is holding a speech. Both of them are forms of _writing_. ,2019-10-15T20:31:33+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",marcograsso,The act of writing in Arabic and in Hebrew: the writer moves his hand from left to right and uses a non-Latin alphabet.,2019-10-15T21:37:52+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 3",ariannamorettj,"A musical scale and a staircase. In both cases the processes of going up and down imply a specific and ordered disposition - of notes in the first case, of steps in the second. ",2019-10-15T21:39:39+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",NoonShin,"It will be 13, resulting from recursively adding the two previous numbers in the sequence. (For natural numbers 1 to 7, the result will respectively be: 1, 1, 2, 3, 5, 8, 13)",2019-10-14T11:39:34+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",arcangelo7,"I agree with Nooshin's answer, but I didn't understand why we need to decrease n in each cycle rather than increase it",2019-10-14T16:16:29+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",NoonShin,"@arcangelo7 I believe that in this solution, _n_ is acting as a sort of counter. We know that we want the 7th number in the sequence, and we know that the first two numbers in the sequence are 1 and 1. So we start counting down from 7, adding the two previous numbers of the sequence in each iteration. 
+
+The process is as follows: When _n_ = 7, we are calculating 1 + 1, which is the 3rd number in the sequence. We decrement _n_ (_n_ = 6), and we calculate the 4th number (1 + 2). If we continue like this, when _n_ reaches 3, we have the 7th number in the sequence, so we return the amount we have calculated in the final step (5 + 8).",2019-10-15T11:28:02+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",aschimmenti," If I need to find the value of the function when the input is n=7, I need to apply the function to the results of the function F=F(7-1)+F(7-2). Going backward, since we know F=F1 and F=F0 are equal to 1 and 0 respectively, we can find F2=1 and all the following values, until F7 which is equal to F7=F6+F5 which again is equal to F7=8+5. ",2019-10-15T13:56:40+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",arimuti,"I tried to solve this exercise using Python:
+
+def fib (n):
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return (fib(n-1)+fib(n-2))
+
+fib(7)
+
+13",2019-10-15T14:58:12+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",arcangelo7,"> @arcangelo7 I believe that in this solution, _n_ is acting as a sort of counter. We know that we want the 7th number in the sequence, and we know that the first two numbers in the sequence are 1 and 1. So we start counting down from 7, adding the two previous numbers of the sequence in each iteration.
+> 
+> The process is as follows: When _n_ = 7, we are calculating 1 + 1, which is the 3rd number in the sequence. We decrement _n_ (_n_ = 6), and we calculate the 4th number (1 + 2). If we continue like this, when _n_ reaches 3, we have the 7th number in the sequence, so we return the amount we have calculated in the final step (5 + 8).
+
+@NoonShin, I've been thinking about it for a long time, but I finally understood. This is really counter-intuitive, but brilliant and beautiful. Thanks! ",2019-10-15T17:08:01+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",elisasilvad,"I rewrite in mathematical language the definition given in natural language: 
+
+The function for calculating the nth Fibonacci number takes as input an integer “n”.
+F=F(n)
+ If “n” is less than or equal to 0, then 0 is returned as a result. 
+F=F(n<=0) = 0
+Otherwise, if “n” is equal to 1, then 1 is returned. 
+F=F(n=1) = 1
+Otherwise, return the sum of the same function with “n-1” as input and still the same function with “n-2” as input.
+F=F(n-1)+F(n-2) 
+
+If the input is 7, F=F(7) and n=7
+F=F(7-1)+F(7-2)=F(6)+F(5)
+I  need to find F6 and F5 
+F=F(6)=F(6-1)+F(6-2) = F=F(5)+F(4)
+F=F(5)=F(5-1)+F(5-2) = F=F(4)+F(3)
+I need to find F(4) and F(3)
+F=F(4)=F(4-1)+F(4-2)=F(3)+F(2)
+F=F(3)=F(3-1)+F(3-2)=F(2)+F(1)
+I know that F(1)=1
+I need to find F(2)
+F=F(2)=F(2-1)+F(2-2)=F(1)+F(0)
+
+I know that F(1)=1 and F(0)=0
+So, I can rewrite it: 
+F=F(2)=F(1)+F(0)=1+0=1  F(2)=1
+F=F(3)=F(2)+F(1)=1+1=2 F(3)=2
+F=F(4)=F(3)+F(2)=2+1=3 F(4)=3
+F=F(5)=F(4)+F(3)=3+2=5 F(5)=5
+F=F(6)=F(5)+F(4)=5+3=8
+And then, finally, F(7)
+F=F(7)=F(6)+F(5)=8+5=13",2019-10-15T17:50:19+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",FrancescoFernicola,I went through the exact same process as @elisasilvad ,2019-10-15T20:22:09+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",ariannamorettj,"I agree with the previous answers. Anyway, since my reminiscences of maths are clearly not sufficient to complete the exercise with either an appropriate language or method, I just tried to put down schematically my mental process: 
+
+Input: 7
+- n is neither less nor equal to 0 (can’t return 0 as a result)
+- n is neither less nor equal to 2 (can’t return 1 as a result)
+- Since the previous conditions couldn’t be applied with 7 as an input… 
+--> a= 1; b=1 
+-->c = a + b 
+- n is neither less nor equal to 3 (can’t return 2 = c as a result)
+- Since the previous conditions couldn’t be applied with 7 as an input…
+--> a = (previous value of) b = 1
+--> b = (previous value of) c = 2
+--> n = input – 1 = 7 – 1 = 6 
+--> c= (a =1)+(b= 2) = 3
+--> n= 6 --> (neither equal nor less than 3) -->a= 2; b =3 ; c= 5 --> n = n-1 = 5
+-->n=5 -->(“) --> a=3; b=5; c=8 --> n= n-1 = 4
+-->n=4 -->(“) --> a=5; b= 8; c= 13 --> n= n-1= 3
+- n is now equal to 3 --> so I return c, whose value is now **13**. 
+
+",2019-10-15T21:25:41+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 2",essepuntato,"Hi @ariannamorettj 
+
+The process you are following works, but it seems to be related more to the first definition in natural language of the Fibonacci algorithm instead of the second definition. I see similar issues also in @NoonShin approach, as also reprised by @arcangelo7.
+
+However, the fact you have focussed on the first definition in natural language instead of the second one could be due to my mistake in the text of the exercise I've provided, and that have corrected a few days ago mentioning explicitly the **second** natural language definition. Apologies for any misunderstanding.",2019-10-18T09:31:01+00:00
+comp-think/2019-2020,"Lecture ""Introduction to Computational Thinking"", exercise 1",NoonShin,"* I write
+* you write
+* I read
+* you read",2019-10-14T11:39:16+00:00
