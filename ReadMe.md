@@ -8,26 +8,34 @@ This repository is part of my master's thesis project at the Digital Humanities 
 ## Repository Structure
 ```
 .
-├── github_stats.ipynb
+├── github_stats.ipynb  # Historical GitHub engagement analysis
+├── analysis.ipynb  # Current timestamps data visualization
 ├── repo_data/
 │   ├── 2018-2019.csv
 │   ├── 2019-2020.csv
 │   └── ...
+├── data/
+│   └── timestamps.json    # Current learning activity timestamps
 └── README.md
 ```
 
 ## Analysis Overview
 
-The script analyzes GitHub engagement data across different academic cohorts:
+The repository contains two main analyses:
 
-1. **Cohort Statistics**
-   - Number of unique users per academic year
-   - Distribution of student engagement
+### 1. Historical GitHub Engagement (2018-2024)
+- Number of unique users per academic year
+- Distribution of student engagement
+- Average comments/tasks per user
+- Task completion distributions
+- Engagement patterns across cohorts
 
-2. **Engagement Metrics**
-   - Average comments/tasks per user
-   - Task completion distributions
-   - Engagement patterns across cohorts
+### 2. Current Learning Activity Analysis (2024-2025)
+The `analysis.ipynb` notebook provides insights into:
+- Task completion patterns and success rates
+- Daily learning activity trends
+- Topic difficulty analysis based on solution times
+- User progression through different topics
 
 ## Key Findings
 
@@ -35,8 +43,14 @@ The distribution of solved tasks per student across different cohorts shows inte
 
 ![Task Distribution Boxplot](figures/task_distribution_boxplot.png)
 
-This visualization reveals:
+This visualization shows:
 - Consistent median task completion across years
 - Varying levels of engagement between cohorts
 - Presence of highly engaged outliers in some years
 
+![Task Attempts Scatter](figures/task_attempts_scatter.png)
+   - Each point represents a task, colored by success rate
+   - X-axis shows average attempts per user
+   - Y-axis shows total number of attempts
+   - Tasks in the upper right require more attempts and may need review
+   - Green points indicate high success rates despite multiple attempts
